@@ -5,9 +5,16 @@
 # fpath directory is expected to contain the _dbg_init_log function def used
 # in dotfiles... also used for other stuff e.g. poetry.
 fpath+=$HOME/.zfunc
+
+# Add Docker Desktop functions dir if present.
+if [ -d "$HOME/.docker/completions" ]
+then
+  fpath+=$HOME/.docker/completions
+fi
+
 export fpath
 
-# OK let's use that function.
+# OK let's use that debug function.
 autoload -Uz _dbg_init_log
 
 # Set _dbg_init to true to warn about uninstalled stuff. (It's perfectly fine
