@@ -1,0 +1,96 @@
+# NOTE: Env vars needed here (not in .zshrc) if they need to also be available
+# to launched applications... particularly a correct PATH is needed for things
+# like Sublime Text launching subprocesses.
+
+# fpath directory is expected to contain the _dbg_init_log function def used
+# in dotfiles... also used for other stuff e.g. poetry.
+fpath+=$HOME/.zfunc
+export fpath
+
+# OK let's use that function.
+autoload -Uz _dbg_init_log
+
+# Set _dbg_init to true to warn about uninstalled stuff. (It's perfectly fine
+# to have some things uninstalled!) Only intended for temporary setup debug;
+# when sourcing this file causes messages to be printed it can mess up some
+# things (like fzf).
+# XXX Maybe I should move all warnings into .zshrc, but the detection for
+# XXX lots of things is already being done here.
+_dbg_init=false
+
+# Set PATH so it includes my private bin dir(s).
+if [ -d "$HOME/bin" ]
+then
+  PATH="$HOME/bin:$PATH"
+fi
+if [ -d "$HOME/.local/bin" ]
+then
+  PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Discover installed stuff && set related vars...
+
+# cargo/rust path
+if [[ -r "$HOME/.cargo/env" ]]
+then
+  source "$HOME/.cargo/env"
+else
+  _dbg_init_log "* cargo/rust not installed"
+fi
+
+# homebrew vars
+has_homebrew=false
+if [[ -x /opt/homebrew/bin/brew ]]
+then
+  has_homebrew=true
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+else
+  # Possible to use homebrew on Linux of course but I never do, so only warn
+  # if missing on macOS.
+  [[ "$ostype" == "Darwin" ]] && _dbg_init_log "* homebrew not installed"
+fi
+
+# golang vars
+if which go > /dev/null 2>&1
+then
+  export GOPATH="$HOME/go"
+  PATH="$GOPATH/bin:$PATH"
+  export GOROOT=$(go env GOROOT)
+else
+  if [[ -x /usr/local/go/bin/go ]]
+  then
+    export GOPATH="$HOME/go"
+    PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
+    export GOROOT=$(go env GOROOT)
+  else
+    _dbg_init_log "* golang not installed"
+  fi
+fi
+
+# asdf vars
+if [[ -r "$HOME/.asdf/asdf.sh" ]]
+then
+  source "$HOME/.asdf/asdf.sh"
+else
+  if [[ "$has_homebrew" == "true" ]]
+  then
+    asdf_sh="$(brew --prefix asdf)/libexec/asdf.sh"
+    [[ -r "$asdf_sh" ]] && source "$asdf_sh"
+  fi
+fi
+which asdf > /dev/null 2>&1 || _dbg_init_log "* asdf not installed"
+
+# nvm functions
+if [[ -r "$HOME/.nvm/nvm.sh" ]]
+then
+  export NVM_DIR="$HOME/.nvm"
+  source "$NVM_DIR/nvm.sh"
+  [[ -r "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"  # even for zsh!
+else
+  _dbg_init_log "* nvm not installed"
+fi
+
+export PATH
+
+# Finally, anything else hyper-specific to this system.
+[[ -r ~/.zshenv_local ]] && source ~/.zshenv_local

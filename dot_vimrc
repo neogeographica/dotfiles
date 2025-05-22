@@ -1,0 +1,32 @@
+set history=500
+set background=dark
+set showcmd
+set ignorecase
+set smartcase
+set incsearch
+set showmatch
+set matchtime=3
+set wildmenu
+set wildmode=longest:full,full
+set ruler
+set laststatus=2
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ %=\ Line:\ %-4l\ Column:\ %-3c
+
+if has("syntax")
+    if !exists("g:syntax_on")
+        syntax on
+    endif
+endif
+
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+map <leader>n :setlocal nu! rnu!<cr>
+map <leader>p :setlocal paste!<cr>
+
+inoremap jk <esc>
+cnoremap jk <C-c>

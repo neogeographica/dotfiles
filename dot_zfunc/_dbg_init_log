@@ -1,0 +1,1 @@
+[[ "$_dbg_init" == "true" ]] && echo $1

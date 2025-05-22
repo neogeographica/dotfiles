@@ -1,0 +1,232 @@
+# If not running interactively, ignore this file.
+# XXX Doubt this is needed, but I don't feel like testing to verify that this
+# XXX file isn't sometimes being sourced by some other file in noninteractive
+# XXX situations.
+case $- in
+  *i*) ;;
+  *)   return ;;
+esac
+
+# We'll do some things differently on macOS vs. Linux, so prep for that.
+ostype=$(uname -s)
+
+# Set up autocomplete in python interpreter.
+if [[ -r "$HOME/.pythonrc" ]]
+then
+  export PYTHONSTARTUP="$HOME/.pythonrc"
+else
+  _dbg_init_log "* python interpreter autocomplete not enabled"
+fi
+
+# Set zsh history options.
+setopt histignoredups
+setopt sharehistory
+HISTSIZE=4000
+SAVEHIST=4000
+HISTFILE="$HOME/.zsh_history"
+
+# Always use emacs-mode keymap.
+bindkey -e
+
+# Enable wezterm integration. We only need to do this explicitly on macOS; in
+# Linux, wezterm.sh is dropped into /etc/profile.d/ for auto-sourcing.
+if [[ "$ostype" == "Darwin" ]]
+then
+  wezterm_sh="/Applications/WezTerm.app/Contents/Resources/wezterm.sh"
+  if [[ -r "$wezterm_sh" ]]
+  then
+    source "$wezterm_sh"
+  else
+    _dbg_init_log "* wezterm not installed"
+  fi
+else
+  which wezterm > /dev/null 2>&1 || _dbg_init_log "* wezterm not installed"
+fi
+
+# Make "less" more friendly for non-text input files.
+if which lesspipe > /dev/null 2>&1
+then
+  eval "$(SHELL=/bin/sh lesspipe)"
+else
+  lesspipe_sh="$(which lesspipe.sh)"
+  [[ -x "$lesspipe_sh" ]] && export LESSOPEN="| $lesspipe_sh %s"
+fi
+[[ -z "$LESSOPEN" ]] && _dbg_init_log "* lesspipe not installed"
+
+# Define the prompt. Use a fancier shell prompt if color is supported.
+user_prompt="%1{❯%}"
+root_prompt="#"
+case "$TERM" in
+  xterm-color|*-256color|xterm-kitty)
+    PS1="%b%u%s%f%k%B%F{green}%n@%m%b%f:%B%F{blue}%~%b%f%(!.${root_prompt}.${user_prompt}) "
+    ;;
+  *)
+    PS1="%n@%m:%~%(!.${root_prompt}.${user_prompt}) "
+    ;;
+esac
+
+# And use fancy window titles if this is an xterm.
+case "$TERM" in
+  xterm*|rxvt*)
+    __el_LAST_EXECUTED_COMMAND=""
+    dir_and_lastcmd_title() {
+      __el_FIRSTPART=""
+      __el_SECONDPART=""
+      if [[ "$PWD" == "$HOME" ]]; then
+        __el_FIRSTPART="Home"
+      else
+        if [[ "$PWD" == "/" ]]; then
+          __el_FIRSTPART="/"
+        else
+          __el_FIRSTPART="${PWD##*/}"
+        fi
+      fi
+      if [[ "$__el_LAST_EXECUTED_COMMAND" == "" ]]; then
+        echo "$__el_FIRSTPART"
+        return
+      fi
+      # Trim the command to the first segment and strip sudo.
+      if [[ "$__el_LAST_EXECUTED_COMMAND" == sudo* ]]; then
+        __el_SECONDPART="${__el_LAST_EXECUTED_COMMAND:5}"
+        __el_SECONDPART="${__el_SECONDPART%% *}"
+      else
+        __el_SECONDPART="${__el_LAST_EXECUTED_COMMAND%% *}"
+      fi
+      printf "%s: %s" "$__el_FIRSTPART" "$__el_SECONDPART"
+    }
+    precmd() {
+      printf "\033]0;%s\007" "$(dir_and_lastcmd_title)"
+    }
+    preexec() {
+      # When setting "last executed command", skip some commands and escapes.
+      case "$1" in
+        *\033]0*)
+          __el_LAST_EXECUTED_COMMAND=""
+          ;;
+        *)
+          cmdonly=${1%% *}
+          case "$cmdonly" in
+            echo|history|printf|clear|cd|z|ls|l|ll|la|lal|lla)
+              __el_LAST_EXECUTED_COMMAND=""
+              ;;
+            *)
+              __el_LAST_EXECUTED_COMMAND="$1"
+              printf "\033]0;%s\007" "$1"
+              ;;
+          esac
+      esac
+    }
+    ;;
+  *)
+    ;;
+esac
+
+# Enable colors in ls results.
+if [[ "$ostype" == "Darwin" ]]; then
+  export CLICOLOR=1
+  export LSCOLORS=ExhxFxdxCxDxDxhbadacec
+else
+  # see .zsh_aliases for command aliases to use colors
+  if which dircolors > /dev/null 2>&1
+  then
+    [[ -r ~/.dircolors ]] && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  else
+    _dbg_init_log "* dircolors not installed"
+  fi
+fi
+
+# Commenting out this lazy init for now... not sure how to best make the lazy
+# init and the tab key rebinding cooperate with the zoxide and fzf init.
+# zsh completions
+# load compinit and rebind ^I (tab) to expand-or-complete, then compile
+# completions as bytecode if needed.
+#lazyload-compinit() {
+#  autoload -Uz compinit
+#  # compinit will automatically cache completions to ~/.zcompdump
+#  compinit
+#  bindkey "^I" expand-or-complete
+#  {
+#    zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+#    # if zcompdump file exists, and we don't have a compiled version or the
+#    # dump file is newer than the compiled file, update the bytecode.
+#    if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+#      zcompile "$zcompdump"
+#    fi
+#  } &!
+#  # pretend we called this directly, instead of the lazy loader
+#  zle expand-or-complete
+#}
+## mark the function as a zle widget
+#zle -N lazyload-compinit
+#bindkey "^I" lazyload-compinit
+
+# Just do an inline compinit for now.
+autoload -Uz compinit && compinit
+# Can still do compiling in the background though.
+{
+  zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+  # if zcompdump file exists, and we don't have a compiled version or the
+  # dump file is newer than the compiled file, update the bytecode.
+  if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+    zcompile "$zcompdump"
+  fi
+} &!
+
+# Detect if everything needed for fzf is present.
+has_fzf=false
+[[ -r ~/.fzf.zsh ]] && has_fzf=true
+which fzf > /dev/null 2>&1 && has_fzf=true
+has_fzf_and_deps=$has_fzf
+which fd > /dev/null 2>&1 || has_fzf_and_deps=false
+which tree > /dev/null 2>&1 || has_fzf_and_deps=false
+which bat > /dev/null 2>&1 || has_fzf_and_deps=false
+if [[ "$has_fzf" == "true" ]]
+then
+  [[ "$has_fzf_and_deps" == "true" ]] || _dbg_init_log "* not all fzf dependencies (fd, tree, bat) installed"
+else
+  _dbg_init_log "* fzf not installed"
+fi
+
+# If so, enable and customize fzf.
+if [[ "$has_fzf_and_deps" == "true" ]]
+then
+  export FZF_DEFAULT_COMMAND='fd --strip-cwd-prefix --hidden --follow --exclude .git'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND='fd --type d --strip-cwd-prefix --hidden --follow --exclude .git'
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude ".git" . "$1"
+  }
+  _fzf_compgen_dir() {
+    fd --type d --hidden --follow --exclude ".git" . "$1"
+  }
+  _fzf_comprun() {
+    local command=$1
+    shift
+    case "$command" in
+      cd|z)         fzf --preview 'tree -C {} | head -200'   "$@" ;;
+      export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
+      *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
+    esac
+  }
+  if [[ -r ~/.fzf.zsh ]]
+  then
+    source ~/.fzf.zsh
+  else
+    source <(fzf --zsh)
+  fi
+fi
+
+# Setup for zoxide. (Additional warning if zoxide present but fzf is not.)
+if which zoxide > /dev/null 2>&1
+then
+  eval "$(zoxide init zsh)"
+  [[ "$has_fzf_and_deps" == "true" ]] || _dbg_init_log "* using zoxide without fzf"
+else
+  _dbg_init_log "* zoxide not installed"
+fi
+
+# Create aliases.
+[[ -r ~/.zsh_aliases ]] && source ~/.zsh_aliases
+
+# Finally, anything else hyper-specific to this system.
+[[ -r ~/.zshrc_local ]] && source ~/.zshrc_local

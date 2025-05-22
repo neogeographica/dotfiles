@@ -1,0 +1,17 @@
+# Set up "ls" command replacement aliases using lsd.
+if which lsd > /dev/null 2>&1
+then
+  alias l=lsd
+  alias la="lsd -A"
+  alias ll="lsd -l"
+  alias lla="lsd -Al"
+  alias lal="lsd -Al"
+else
+  _dbg_init_log "* lsd not installed"
+fi
+
+# Default to enabling color support for some commands.
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'

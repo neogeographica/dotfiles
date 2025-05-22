@@ -1,0 +1,17 @@
+[user]
+	name = Joel Baxter
+	email = joel.baxter@neogeographica.com
+[includeIf "gitdir:~/Projects/Work/"]
+	path = ~/Projects/Work/.gitconfig
+[core]
+	excludesfile = ~/.gitignore_global
+[init]
+	defaultBranch = main
+[diff]
+	algorithm = histogram
+[merge]
+	conflictstyle = diff3
+[rerere]
+	enabled = true
+[branch]
+	sort = -committerdate
