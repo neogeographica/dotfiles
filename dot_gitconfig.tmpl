@@ -10,7 +10,11 @@
 [diff]
 	algorithm = histogram
 [merge]
+{{- if eq .chezmoi.os "darwin" }}
+	conflictstyle = zdiff3
+{{- else }}
 	conflictstyle = diff3
+{{- end }}
 [rerere]
 	enabled = true
 [branch]
