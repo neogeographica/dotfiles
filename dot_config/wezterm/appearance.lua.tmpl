@@ -106,7 +106,7 @@ function module.configure(config)
     'MonaspiceAr NFM',
     'Noto Color Emoji',
   }
-  config.font_size = 10
+  config.font_size = {{ dig "wezterm" "font" "size" 10 . }}
   config.warn_about_missing_glyphs=false
   -- macOS differences:
   -- Using WebGpu on macOS for its color aesthetics.
