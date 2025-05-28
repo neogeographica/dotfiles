@@ -1,23 +1,43 @@
-Host github.com
+Host ng.github.com
     HostName github.com
     User git
     PreferredAuthentications publickey
+    IdentityFile ~/.ssh/ng_github_rsa.pub
 {{- if eq .chezmoi.os "darwin" }}
-    AddKeysToAgent yes
-    UseKeychain yes
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- else }}
+    IdentityAgent ~/.1password/agent.sock
 {{- end }}
-    IdentityFile ~/.ssh/ng_github_rsa
-    IdentityFile ~/.ssh/bluedata_github_rsa
-    IdentitiesOnly yes
 
-Host gist.github.com
+Host ng.gist.github.com
     HostName gist.github.com
     User git
     PreferredAuthentications publickey
+    IdentityFile ~/.ssh/ng_github_rsa.pub
 {{- if eq .chezmoi.os "darwin" }}
-    AddKeysToAgent yes
-    UseKeychain yes
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- else }}
+    IdentityAgent ~/.1password/agent.sock
 {{- end }}
-    IdentityFile ~/.ssh/ng_github_rsa
-    IdentityFile ~/.ssh/bluedata_github_rsa
-    IdentitiesOnly yes
+
+Host bd.github.com
+    HostName github.com
+    User git
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/bluedata_github_rsa.pub
+{{- if eq .chezmoi.os "darwin" }}
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- else }}
+    IdentityAgent ~/.1password/agent.sock
+{{- end }}
+
+Host bd.gist.github.com
+    HostName gist.github.com
+    User git
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/bluedata_github_rsa.pub
+{{- if eq .chezmoi.os "darwin" }}
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- else }}
+    IdentityAgent ~/.1password/agent.sock
+{{- end }}
