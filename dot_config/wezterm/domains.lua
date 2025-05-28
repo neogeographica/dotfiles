@@ -34,7 +34,7 @@ end
 
 function module.configure(config)
   -- Specify a unix domain to use for local terminals that persist state.
-  local this_host_domain_name = wezterm.hostname()
+  local this_host_domain_name = wezterm.hostname():gsub("%..*","")
   config.unix_domains = {
     {
       name = this_host_domain_name,
