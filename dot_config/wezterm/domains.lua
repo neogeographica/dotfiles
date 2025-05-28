@@ -85,7 +85,7 @@ function module.configure(config)
     config.keys,
     {
       key = 'o',
-      mods = 'SHIFT|CTRL',
+      mods = 'CTRL',
       action = wezterm.action.InputSelector {
         title = "Domains",
         choices = domain_choices,

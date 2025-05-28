@@ -11,7 +11,7 @@ function module.configure(config)
     config.keys,
     {
       key = 'o',
-      mods = 'CTRL',
+      mods = 'SHIFT|CTRL',
       action = wezterm.action.ShowLauncherArgs {
         flags = 'FUZZY|WORKSPACES',
       },
