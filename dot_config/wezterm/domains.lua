@@ -33,12 +33,16 @@ local function find_and_raise_domain_panes(domain_name)
 end
 
 function module.configure(config)
-  -- Specify a unix domain to use for local terminals that persist state.
   local this_host_domain_name = wezterm.hostname():gsub("%..*","")
+  -- Specify a unix domain to use for local terminals that persist state.
+  -- XXX Jankiness of unix/ssh domains not worth the persistence... will
+  -- just use a regular local terminal.
   config.unix_domains = {
+--[[
     {
       name = this_host_domain_name,
     },
+--]]
   }
   -- Build the list of ssh-accessible remote domains. Skip any that are
   -- the same as the local domain above.
@@ -59,21 +63,24 @@ function module.configure(config)
       )
     end
   end
-  -- Use the unix domain on startup. Note that if a Linux desktop file is
-  -- used to launch Wezterm and it specifies other args, this will be ignored.
-  config.default_gui_startup_args = { 'connect', this_host_domain_name }
   -- Now make a list of the domains in the order they should be presented
   -- in the domain-selector.
   domain_choices = {}
+  -- XXX As mentioned above, using a regular local terminal (no persistence).
+  table.insert(domain_choices, { label = 'local' })
   for _, unix_domain in ipairs(config.unix_domains) do
     table.insert(domain_choices, { label = unix_domain.name })
   end
   for _, ssh_domain in ipairs(config.ssh_domains) do
     table.insert(domain_choices, { label = ssh_domain.name })
   end
-  -- Could also support direct local terminal (no persisted state)... not
-  -- using this right now though.
---  table.insert(domain_choices, { label = 'local' })
+
+  -- Use the domain for this host on startup. Note that if a Linux desktop
+  -- file is used to launch Wezterm and it specifies other args, this will
+  -- be ignored.
+  -- XXX As mentioned above, using a regular local terminal (no persistence).
+--  config.default_gui_startup_args = { 'connect', this_host_domain_name }
+  config.default_gui_startup_args = { 'connect', 'local' }
 
   -- Define the action of the domain-selector keybinding, as follows:
   --   * Present a list of domains to select from, w/ fuzzy select enabled.
