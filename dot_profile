@@ -1,0 +1,89 @@
+# I'd like to set env vars in .zprofile and/or .zshenv, but in some (most?)
+# GNOME systems using X11, vars set there are not available to things launched
+# outside of a shell (including the launchers themselves like the dock or
+# quicklaunch or file manager). That can be bad in general, and specifically
+# bad if PATH modifications are not present.
+
+# So I'll just set stuff in .profile, since at least on the particular
+# GNOME systems I've dealt with, the login manager explicitly sources
+# .profile to pick up env vars.
+
+# I'll source .profile from .zprofile to make sure these vars get set on
+# all systems. The guard variable PROFILE_SOURCED avoids double-sourcing.
+
+# This does mean that this file may be sourced BEFORE .zshenv in some
+# systems/configurations and AFTER .zshenv in others. To avoid weirdness,
+# .zshenv won't be used for anything except some specific zsh stuff (e.g.
+# setting fpath) that won't work here and doesn't affect this file.
+
+if [[ "x$PROFILE_SOURCED" == "xtrue" ]]
+then
+  return
+fi
+
+# Always make PATH include my private bin dir.
+PATH="$HOME/.local/bin:$PATH"
+
+# Discover installed stuff && set related vars.
+# Note that since this is in .profile, discovery is only done at login-shell
+# time. (Although various terminal programs will always start a login shell
+# for each new shell anyway.)
+# Also, any debug logging for missing things will be done in .zshrc, to
+# be able to use the autoloaded _dbg_init_log function and make sure the
+# log messages are always visible.
+
+# cargo/rust path
+if [[ -r "$HOME/.cargo/env" ]]
+then
+  source "$HOME/.cargo/env"
+fi
+
+# homebrew vars
+has_homebrew=false
+if [[ -x /opt/homebrew/bin/brew ]]
+then
+  has_homebrew=true
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# golang vars
+if which go > /dev/null 2>&1
+then
+  export GOPATH="$HOME/go"
+  PATH="$GOPATH/bin:$PATH"
+  export GOROOT=$(go env GOROOT)
+else
+  if [[ -x /usr/local/go/bin/go ]]
+  then
+    export GOPATH="$HOME/go"
+    PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
+    export GOROOT=$(go env GOROOT)
+  fi
+fi
+
+# asdf vars
+if [[ -r "$HOME/.asdf/asdf.sh" ]]
+then
+  source "$HOME/.asdf/asdf.sh"
+else
+  if [[ "$has_homebrew" == "true" ]]
+  then
+    asdf_sh="$(brew --prefix asdf)/libexec/asdf.sh"
+    [[ -r "$asdf_sh" ]] && source "$asdf_sh"
+  fi
+fi
+
+# nvm functions
+if [[ -r "$HOME/.nvm/nvm.sh" ]]
+then
+  export NVM_DIR="$HOME/.nvm"
+  source "$NVM_DIR/nvm.sh"
+  [[ -r "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"  # even for zsh!
+fi
+
+# Finally, anything else hyper-specific to this system.
+[[ -r ~/.profile_local ]] && source ~/.profile_local
+
+export PATH
+
+export PROFILE_SOURCED=true

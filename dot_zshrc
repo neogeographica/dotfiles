@@ -10,6 +10,28 @@ esac
 # We'll do some things differently on macOS vs. Linux, so prep for that.
 ostype=$(uname -s)
 
+# Set _dbg_init to true to warn about uninstalled stuff. (It's perfectly fine
+# to have some things uninstalled!)
+_dbg_init=false
+
+# Prep the debuglog function.
+autoload -Uz _dbg_init_log
+
+# Do the debug logging that we can't/won't do in .profile.
+if [[ "$_dbg_init" == "true" ]]
+then
+  which cargo > /dev/null 2>&1 || _dbg_init_log "* cargo/rust not installed"
+  # Possible to use homebrew on Linux of course but I never do, so only warn
+  # if missing on macOS.
+  if [[ "$ostype" == "Darwin" ]]
+  then
+    which brew > /dev/null 2>&1 || _dbg_init_log "* homebrew not installed"
+  fi
+  which go > /dev/null 2>&1 || _dbg_init_log "* golang not installed"
+  which asdf > /dev/null 2>&1 || _dbg_init_log "* asdf not installed"
+  which node > /dev/null 2>&1 || _dbg_init_log "* nvm not installed"
+fi
+
 # Set up autocomplete in python interpreter.
 if [[ -r "$HOME/.pythonrc" ]]
 then
