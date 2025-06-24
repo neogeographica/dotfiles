@@ -26,13 +26,23 @@ autoload -Uz _dbg_init_log
 _dbg_init=false
 
 # Set PATH so it includes my private bin dir(s).
-if [ -d "$HOME/bin" ]
+if [[ -d "$HOME/bin" ]]
 then
-  PATH="$HOME/bin:$PATH"
+  true
+else
+  if [[ ":$PATH:" == *":$HOME/bin:"* ]]
+  then
+    PATH="$HOME/bin:$PATH"
+  fi
 fi
-if [ -d "$HOME/.local/bin" ]
+if [[ -d "$HOME/.local/bin" ]]
 then
-  PATH="$HOME/.local/bin:$PATH"
+  true
+else
+  if [[ ":$PATH:" == *":$HOME/.local/bin:"* ]]
+  then
+    PATH="$HOME/.local/bin:$PATH"
+  fi
 fi
 
 # Discover installed stuff && set related vars...
