@@ -1,7 +1,11 @@
 # Vars should generally be set in .profile; see comments there.
 
-# If .profile is sourced by the login manager, that's too early to modify
-# fpath, so we'll do it here.
+# We'll source it from here. Set a var to indicate that's what is going on.
+SOURCING_PROFILE_FROM_ZSHENV=true
+[[ -r ~/.profile ]] && source ~/.profile
+
+# .profile may alternately be sourced by the login manager, which is too early
+# to modify fpath. So we'll handle that here.
 
 # fpath directory is expected to contain the _dbg_init_log function def used
 # in dotfiles... also used for other stuff e.g. poetry.

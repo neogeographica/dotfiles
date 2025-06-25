@@ -1,36 +1,51 @@
-# I'd like to set env vars in .zprofile and/or .zshenv, but in some (most?)
-# GNOME systems using X11, vars set there are not available to things launched
-# outside of a shell (including the launchers themselves like the dock or
-# quicklaunch or file manager). That can be bad in general, and specifically
-# bad if PATH modifications are not present.
+# Normally I'd want to set env vars in .zprofile and/or .zshenv. Since some of
+# these app-setups also involve defining shell functions, the work of this
+# script would generally need to be done in .zshenv.
 
-# So I'll just set stuff in .profile, since at least on the particular
+# BUT in some (most?) GNOME systems using X11, vars set in .zshenv/.zprofile
+# are not available to things launched outside of a shell (including the
+# launchers themselves like the dock or quicklaunch or file manager). That can
+# be bad in general, and specifically bad if that causes PATH modifications
+# to be skipped.
+
+# So I'll just set stuff here in .profile, since at least on the particular
 # GNOME systems I've dealt with, the login manager explicitly sources
-# .profile to pick up env vars.
+# .profile to help set the environment for those launchers etc.
 
-# I'll source .profile from .zprofile to make sure these vars get set on
-# all systems. The guard variable PROFILE_SOURCED avoids double-sourcing.
+# I'll source .profile from .zshenv to make sure these vars get set on
+# all systems, and to make sure that any defined shell functions are available.
 
 # This does mean that this file may be sourced BEFORE .zshenv in some
-# systems/configurations and AFTER .zshenv in others. To avoid weirdness,
-# .zshenv won't be used for anything except some specific zsh stuff (e.g.
-# setting fpath) that won't work here and doesn't affect this file.
+# systems/configurations/situations and FROM .zshenv in others. To avoid
+# weirdness, the other content in .zshenv will only be specific zsh stuff that
+# won't work in the login-manager-sourcing case and doesn't affect this file.
 
-if [[ "x$PROFILE_SOURCED" == "xtrue" ]]
+# Also: I only want to process this file if it's being sourced from the
+# login manager or from .zshenv, to avoid double sourcing (although that
+# wouldn't be the end of the world). Another way to put that is: if this is
+# in a login shell, and this is not being sourced from .zshenv, then bail.
+# Login manager could use non-zsh (e.g. sh) to run this script so we will
+# test for login shell the old-fashioned way.
+if echo $0 | grep -e ^\- > /dev/null 2>&1
 then
-  return
+  if [[ "x$SOURCING_PROFILE_FROM_ZSHENV" != "xtrue" ]]
+  then
+    return
+  fi
 fi
+
+# Because login manager may execute this with some other shell, don't use
+# zsh-isms below! Hopefully the scripts sourced for app setup will also
+# behave... if not, cross that bridge when we come to it.
 
 # Always make PATH include my private bin dir.
 PATH="$HOME/.local/bin:$PATH"
 
 # Discover installed stuff && set related vars.
-# Note that since this is in .profile, discovery is only done at login-shell
-# time. (Although various terminal programs will always start a login shell
-# for each new shell anyway.)
-# Also, any debug logging for missing things will be done in .zshrc, to
-# be able to use the autoloaded _dbg_init_log function and make sure the
-# log messages are always visible.
+
+# Note that any debug logging for missing things will be done in .zshrc, to
+# use the autoloaded _dbg_init_log function and make sure it only happens in
+# interactive shells.
 
 # cargo/rust path
 if [[ -r "$HOME/.cargo/env" ]]
@@ -85,5 +100,3 @@ fi
 [[ -r ~/.profile_local ]] && source ~/.profile_local
 
 export PATH
-
-export PROFILE_SOURCED=true

@@ -2,10 +2,10 @@
 # XXX Doubt this is needed, but I don't feel like testing to verify that this
 # XXX file isn't sometimes being sourced by some other file in noninteractive
 # XXX situations.
-case $- in
-  *i*) ;;
-  *)   return ;;
-esac
+if ! [[ -o interactive ]]
+then
+  return
+fi
 
 # We'll do some things differently on macOS vs. Linux, so prep for that.
 ostype=$(uname -s)

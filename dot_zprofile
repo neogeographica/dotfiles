@@ -1,3 +1,0 @@
-# See comments in .profile as to why vars are set there rather than here
-# or in .zshenv.
-[[ -r ~/.profile ]] && source ~/.profile
