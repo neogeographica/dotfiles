@@ -10,13 +10,10 @@ local mode = 'allowlist'
 if mode == 'allowlist' then
   return {
     'Poimandres',
-    'SpaceGray Eighties',
-    'SpaceGray Eighties Dull',
-    '3024 (base16)',
-    'Dracula (Gogh)',
-    'Guezwhoz',
-    'IR Black (base16)',
-    'nightfox',
+    'Brewer (base16)',
+    'Catppuccin Mocha (Gogh)',
+    'Github Dark (Gogh)',
+    'Horizon Dark (Gogh)',
   }
 end
 
@@ -323,12 +320,22 @@ local schemes_denylist = {
   'Ic Green Ppl (Gogh)',
   'Ic Orange Ppl (Gogh)',
   'Icy Dark (base16)',
-  -- Got to this point so far, looking at color schemes in order.
-  -- Some other misc denies:
+  'Idle Toes (Gogh)',
+  'IdleToes (Gogh)',
+  'Invisibone (terminal.sexy)',
   'IR_Black',
+  'IrBlack (Gogh)',
+  'Isotope (base16)',
+  'Isotope (dark) (terminal.sexy)',
   'iTerm2 Pastel Dark Background',
   'iTerm2 Solarized Dark',
+  'Ivory Dark (terminal.sexy)',
+  'Jackie Brown',
+  'Jackie Brown (Gogh)',
+  'JackieBrown (Gogh)',
   'jmbi (terminal.sexy)',
+  -- Got to this point so far, looking at color schemes in order.
+  -- Some other misc denies:
   'kokuban (Gogh)',
   'matrix',
   'mono-amber (Gogh)',
