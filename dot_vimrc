@@ -10,19 +10,22 @@ if executable('fzf')
   Plug 'junegunn/fzf.vim'
 endif
 Plug 'mhinz/vim-startify'
+Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
-let g:startify_custom_header=''
+" only used by old statusline
+"function! HasPaste()
+"    if &paste
+"        return 'PASTE MODE  '
+"    endif
+"    return ''
+"endfunction
 
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
+" old non-airline statusline
+"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ %=\ Line:\ %-4l\ Column:\ %-3c
 
 set history=500
 set background=dark
@@ -36,9 +39,13 @@ set wildmenu
 set wildmode=longest:full,full
 set ruler
 set laststatus=2
+set signcolumn=auto
 
-" old non-airline statusline
-"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ %=\ Line:\ %-4l\ Column:\ %-3c
+" decrease updatetime to make gitgutter more snappy
+set updatetime=500
+
+" startify config
+let g:startify_custom_header=''
 
 " airline config
 let g:airline_powerline_fonts = 1
