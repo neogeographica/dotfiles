@@ -15,6 +15,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'mbbill/undotree'
+Plug 'terryma/vim-smooth-scroll'
 call plug#end()
 
 " only used by old statusline
@@ -68,6 +69,11 @@ if has("syntax")
 endif
 
 nnoremap <F5> :UndotreeToggle<CR>
+
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 15, 2)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 15, 2)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 15, 4)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 15, 4)<CR>
 
 map <leader>n :setlocal nu! rnu!<cr>
 map <leader>p :setlocal paste!<cr>
