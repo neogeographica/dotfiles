@@ -50,6 +50,9 @@ HISTFILE="$HOME/.zsh_history"
 # Always use emacs-mode keymap.
 bindkey -e
 
+# Ignore ctrl-S/Q.
+stty -ixon
+
 # Enable wezterm integration. We only need to do this explicitly on macOS; in
 # Linux, wezterm.sh is dropped into /etc/profile.d/ for auto-sourcing.
 if [[ "$ostype" == "Darwin" ]]
