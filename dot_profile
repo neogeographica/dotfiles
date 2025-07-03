@@ -15,17 +15,27 @@
 # I'll source .profile from .zshenv to make sure these vars get set on
 # all systems, and to make sure that any defined shell functions are available.
 
-# This does mean that this file may be sourced BEFORE .zshenv in some
-# systems/configurations/situations and FROM .zshenv in others. To avoid
-# weirdness, the other content in .zshenv will only be specific zsh stuff that
-# won't work in the login-manager-sourcing case and doesn't affect this file.
-
 # Also: I only want to process this file if it's being sourced from the
 # login manager or from .zshenv, to avoid double sourcing (although that
-# wouldn't be the end of the world). Another way to put that is: if this is
-# in a login shell, and this is not being sourced from .zshenv, then bail.
-# Login manager could use non-zsh (e.g. sh) to run this script so we will
-# test for login shell the old-fashioned way.
+# wouldn't be the end of the world).
+#
+# This rule should handle that: if we are in a login shell, and this file is
+# not being sourced from .zshenv, then bail out.
+#
+# What should happen is:
+# - A login shell may or may not try to source .profile directly. In that
+#   case we'll bail out of sourcing this file. But then the login shell setup
+#   will continue on to source .zshenv which will source this file.
+# - A non-login shell will source .zshenv which will source this file.
+# - In GNOME+X11, the login manager sources .profile directly. It is not seen
+#   as a "login shell", so this file will indeed get sourced (not bail out).
+# - In other scenarios (I think including GNOME+Wayland and KDE), the login
+#   manager does not source .profile directly; instead it actually runs a
+#   login shell to get all the normal config sourcing done. That will then
+#   behave as a "real" login shell would.
+
+# The GNOME+X11 login manager could use non-zsh (e.g. sh) to source this script
+# so we will test for login shell the old-fashioned way.
 if echo $0 | grep -e ^\- > /dev/null 2>&1
 then
   if [[ "x$SOURCING_PROFILE_FROM_ZSHENV" != "xtrue" ]]
@@ -34,7 +44,7 @@ then
   fi
 fi
 
-# Because login manager may execute this with some other shell, don't use
+# Because login manager may execute this using some other shell, don't use
 # zsh-isms below! Hopefully the scripts sourced for app setup will also
 # behave... if not, cross that bridge when we come to it.
 
