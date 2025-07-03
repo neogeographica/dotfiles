@@ -11,9 +11,7 @@ if mode == 'allowlist' then
   return {
     'Poimandres',
     'Catppuccin Mocha (Gogh)',
-    'Horizon Dark (Gogh)',
-    'JWR dark (terminal.sexy)',
-    'Modus-Vivendi-Tinted',
+    'Night Owl (Gogh)',
   }
 end
 
@@ -402,6 +400,29 @@ local schemes_denylist = {
   'mono-red (Gogh)',
   'mono-white (Gogh)',
   'mono-yellow (Gogh)',
+  'Mono Theme (terminal.sexy)',
+  'Monokai Dark (Gogh)',
+  'Morada (Gogh)',
+  'N0Tch2K (Gogh)',
+  'N0Tch2k',
+  'Nature Suede (terminal.sexy)',
+  'Nebula (base16)',
+  'Neon',
+  'Neon (terminal.sexy)',
+  'Neopolitan',
+  'Neopolitan (Gogh)',
+  'Neutron',
+  'NightLion v1',
+  'NightLion v2',
+  'NightOwl (Gogh)',
+  'NightLionV1 (Gogh)',
+  'NightLionV2 (Gogh)',
+  'Nighty (Gogh)',
+  'Nord (Gogh)',
+  'Nord (base16)',
+  'Nova (base16)',
+  'Nudge (terminal.sexy)',
+  'Numix Darkest (terminal.sexy)',
   -- Got to this point so far, looking at color schemes in order.
   -- Some other misc denies:
   'pinky (base16)',
