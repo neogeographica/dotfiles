@@ -21,6 +21,15 @@ local function toggleSchemeNameStatus(_, _)
   end
 end
 
+-- Utility function to write out the window's current color scheme name to a
+-- file. The scheme name will be appended to the file color_scheme_names.txt
+-- in the config dir.
+local function dumpSchemeName(window, _)
+  file = io.open(wezterm.config_dir .. "/color_scheme_names.txt","a")
+  file:write(window:effective_config().color_scheme .. "\n")
+  file:close()
+end
+
 -- Utility function for composing tab title for display.
 local function tab_title(tab_info)
   local retval = tab_info.active_pane.title
@@ -166,6 +175,15 @@ function module.configure(config)
       key = 's',
       mods = 'CTRL',
       action = wezterm.action_callback(toggleSchemeNameStatus),
+    }
+  )
+  -- Set key for dumping color scheme name to a file.
+  table.insert(
+    config.keys,
+    {
+      key = 's',
+      mods = 'CTRL|SHIFT',
+      action = wezterm.action_callback(dumpSchemeName),
     }
   )
 end
