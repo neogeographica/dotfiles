@@ -41,3 +41,25 @@ Host bd.gist.github.com
 {{- else }}
     IdentityAgent ~/.1password/agent.sock
 {{- end }}
+
+Host github.com
+    HostName github.com
+    User git
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/bluedata_github_rsa.pub
+{{- if eq .chezmoi.os "darwin" }}
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- else }}
+    IdentityAgent ~/.1password/agent.sock
+{{- end }}
+
+Host gist.github.com
+    HostName gist.github.com
+    User git
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/bluedata_github_rsa.pub
+{{- if eq .chezmoi.os "darwin" }}
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+{{- else }}
+    IdentityAgent ~/.1password/agent.sock
+{{- end }}
