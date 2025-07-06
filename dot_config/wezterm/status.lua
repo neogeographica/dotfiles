@@ -25,7 +25,7 @@ end
 -- file. The scheme name will be appended to the file color_scheme_names.txt
 -- in the config dir.
 local function dumpSchemeName(window, _)
-  file = io.open(wezterm.config_dir .. "/color_scheme_names.txt","a")
+  local file = io.open(wezterm.config_dir .. "/color_scheme_names.txt","a")
   file:write(window:effective_config().color_scheme .. "\n")
   file:close()
 end
