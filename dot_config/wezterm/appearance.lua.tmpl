@@ -37,7 +37,9 @@ local function setColorSchemeForWindow(color_scheme_name, window)
 end
 
 -- Common utility function to set color scheme for all existing and future
--- windows. Except for skipWindow, if non-nil.
+-- windows. Except for skipWindow, if non-nil. The color scheme name is also
+-- written to last_color_scheme.txt in the config dir, to be able return to
+-- this same scheme on startup.
 local function applySchemeToAllWindows(color_scheme_name, skipWindow)
   for _, mux_window in ipairs(wezterm.mux.all_windows()) do
     local window = mux_window:gui_window()
@@ -45,6 +47,9 @@ local function applySchemeToAllWindows(color_scheme_name, skipWindow)
       setColorSchemeForWindow(color_scheme_name, window)
     end
   end
+  local file = io.open(wezterm.config_dir .. "/last_color_scheme.txt","w")
+  file:write(color_scheme_name)
+  file:close()
   wezterm.GLOBAL.color_scheme_name = color_scheme_name
   wezterm.reload_configuration()
 end
@@ -89,7 +94,13 @@ function module.configure(config)
   -- Set color scheme.
   local color_scheme_name
   if wezterm.GLOBAL.color_scheme_name == nil then
-    color_scheme_name = schemes[1]
+    local file = io.open(wezterm.config_dir .. "/last_color_scheme.txt","r")
+    if not file then
+      color_scheme_name = schemes[1]
+    else
+      color_scheme_name = file:read("*a")
+      file:close()
+    end
   else
     color_scheme_name = wezterm.GLOBAL.color_scheme_name
   end

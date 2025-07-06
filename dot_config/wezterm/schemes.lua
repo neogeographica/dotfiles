@@ -5,7 +5,7 @@
 local mode = 'allowlist'
 
 -- If allowlist mode, just return a list of chosen schemes. First one in the
--- list will be the scheme at startup.
+-- list will be the scheme at first startup.
 
 if mode == 'allowlist' then
   return {
