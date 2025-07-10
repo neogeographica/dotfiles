@@ -1,0 +1,7 @@
+# The only purpose of this file is, on macOS, to fix PATH after it was
+# re-ordered against our desires by path_helper.
+
+if [[ -n "$PATH_SAVED" ]]
+then
+  PATH="$PATH_SAVED"
+fi

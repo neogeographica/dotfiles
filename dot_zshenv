@@ -1,6 +1,31 @@
-# Vars should generally be set in .profile; see comments there.
+# Vars should generally be set in .profile; see comments there for explanation.
+# We'll source that file from here.
 
-# We'll source it from here. Set a var to indicate that's what is going on.
+# Don't allow dups in PATH.
+typeset -U path PATH
+
+# If this is a login shell, then on macOS, the PATH order that I set is
+# immediately going to be screwed up by path_helper when /etc/zprofile is
+# sourced. There are recommended solutions for this involving defining the
+# PATH in other files like .zprofile or .zshrc; however some of the
+# PATH-defining functions also create shell functions and I want those done
+# here in .zshenv. Other solutions out there too which I don't much like, e.g.
+# editing or preventing the sourcing of the system shell config files like
+# /etc/zprofile.
+
+# Instead let's do a little dance here. If this is a login shell, run
+# path_helper first before adding custom elements to path. After modifying
+# the path, save it to a temporary var. In .zprofile we'll copy that temp
+# var back to PATH.
+if [[ -o login ]]
+then
+  if [[ -x /usr/libexec/path_helper ]]; then
+    eval $(/usr/libexec/path_helper -s)
+  fi
+fi
+
+# OK! Let's do the source-ing of .profile. Set a var to indicate that's what
+# is going on.
 SOURCING_PROFILE_FROM_ZSHENV=true
 [[ -r ~/.profile ]] && source ~/.profile
 
@@ -22,3 +47,7 @@ export fpath
 # If this system needs something else and needs it specifically in zshenv,
 # pick that up here.
 [[ -r ~/.zshenv_local ]] && source ~/.zshenv_local
+
+# As mentioned above let's save our intended PATH to protect it from further
+# mucking about from path_helper.
+PATH_SAVED="$PATH"
