@@ -1,6 +1,4 @@
-# Normally I'd want to set env vars in .zprofile and/or .zshenv. Since some of
-# these app-setups also involve defining shell functions, the work of this
-# script would generally need to be done in .zshenv.
+# Normally I'd want to set env vars in .zprofile and/or .zshenv.
 
 # BUT in some (most?) GNOME systems using X11, vars set in .zshenv/.zprofile
 # are not available to things launched outside of a shell (including the
@@ -12,11 +10,11 @@
 # GNOME systems I've dealt with, the login manager explicitly sources
 # .profile to help set the environment for those launchers etc.
 
-# I'll source .profile from .zshenv to make sure these vars get set on
-# all systems, and to make sure that any defined shell functions are available.
+# I'll source .profile from .zshenv to handle non-login-manager cases.
 
-# Also: I only want to process this file if it's being sourced from the
-# login manager or from .zshenv, to avoid double sourcing (although that
+# It's possible that a non-login-manager case will also directly source
+# this file. So: I only want to process this file if it's being sourced from
+# the login manager or from .zshenv, to avoid double sourcing (although that
 # wouldn't be the end of the world).
 #
 # This rule should handle that: if we are in a login shell, and this file is

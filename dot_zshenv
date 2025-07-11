@@ -1,36 +1,39 @@
-# Vars should generally be set in .profile; see comments there for explanation.
-# We'll source that file from here.
+# Annoyingly, on macOS if this is in a login shell then later sourcing of
+# /etc/zprofile will screw up the ordering of PATH elements (by using
+# path_helper). Any solution for this needs to make sure that the contents of
+# this file get executed for a shell regardless of whether it is interactive
+# or login. Also the execution needs to be in the shell itself, not a parent
+# shell... some of the sourced app setups also create shell functions, which
+# are not inherited to subshells.
+
+# So: if this is a login shell, and therefore /etc/zprofile and .zprofile
+# are going to get sourced, then don't process this file yet. Wait and source
+# it from .zprofile, after /etc/zprofile has done its macOS path shenanigans.
+# This fixes the macOS issue and is also harmless on other systems.
+if [[ -o login ]]
+then
+  if [[ "x$SOURCING_ZSHENV_FROM_ZPROFILE" != "xtrue" ]]
+  then
+    return
+  fi
+fi
+
+# Irritating that we have to subvert the normal usage patterns of the zsh
+# startup config files of course (and we're going to do it again below with
+# the .profile use). Anyway, onward!
 
 # Don't allow dups in PATH.
 typeset -U path PATH
 
-# If this is a login shell, then on macOS, the PATH order that I set is
-# immediately going to be screwed up by path_helper when /etc/zprofile is
-# sourced. There are recommended solutions for this involving defining the
-# PATH in other files like .zprofile or .zshrc; however some of the
-# PATH-defining functions also create shell functions and I want those done
-# here in .zshenv. Other solutions out there too which I don't much like, e.g.
-# editing or preventing the sourcing of the system shell config files like
-# /etc/zprofile.
-
-# Instead let's do a little dance here. If this is a login shell, run
-# path_helper first before adding custom elements to path. After modifying
-# the path, save it to a temporary var. In .zprofile we'll copy that temp
-# var back to PATH.
-if [[ -o login ]]
-then
-  if [[ -x /usr/libexec/path_helper ]]; then
-    eval $(/usr/libexec/path_helper -s)
-  fi
-fi
-
-# OK! Let's do the source-ing of .profile. Set a var to indicate that's what
-# is going on.
+# Vars will generally be set in .profile; see comments there for explanation.
+# We'll source that file from here. Set a var to indicate that's what is
+# going on.
 SOURCING_PROFILE_FROM_ZSHENV=true
 [[ -r ~/.profile ]] && source ~/.profile
 
-# .profile may alternately be sourced by the login manager, which is too early
-# to modify fpath. So we'll handle that here.
+# fpath modifications are the exception. The .profile may be sourced directly
+# by the login manager, not using zsh, so we'll still handle fpath
+# modifications in this file.
 
 # fpath directory is expected to contain the _dbg_init_log function def used
 # in dotfiles... also used for other stuff e.g. poetry.
@@ -47,7 +50,3 @@ export fpath
 # If this system needs something else and needs it specifically in zshenv,
 # pick that up here.
 [[ -r ~/.zshenv_local ]] && source ~/.zshenv_local
-
-# As mentioned above let's save our intended PATH to protect it from further
-# mucking about from path_helper.
-PATH_SAVED="$PATH"
