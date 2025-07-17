@@ -13,10 +13,8 @@ if mode == 'allowlist' then
     'Catppuccin Mocha (Gogh)',
     'Github Dark (Gogh)',
     'Kimber (base16)',
-    'Marrakesh (base16)',
     'Night Owl (Gogh)',
     'Rosé Pine (Gogh)',
-    'terafox',
     'VisiBone (terminal.sexy)',
     'Vs Code Dark+ (Gogh)',
   }
