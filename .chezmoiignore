@@ -1,4 +1,4 @@
 {{- if eq .chezmoi.os "darwin" }}
 .dircolors
-.config/autostart/1password-silent.desktop
+.config/autostart/
 {{- end }}
