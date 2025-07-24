@@ -8,24 +8,26 @@ local module = {}
 -- bouncing back and forth. Disable it for now unless lag is really bad.
 local ECHO_THRESHOLD_MS = 2000
 
-local function find_and_raise_domain_panes(domain_name)
+local function find_and_raise_domain_panes(domain_name, workspace)
   local stop_checking_tabs = false
   local found_attached_pane = false
   for _, check_mux_window in ipairs(wezterm.mux.all_windows()) do
-    stop_checking_tabs = false
-    for _, check_tab in ipairs(check_mux_window:tabs()) do
-      for _, check_pane in ipairs(check_tab:panes()) do
-        if check_pane:get_domain_name() == domain_name then
-          check_tab:activate()
-          check_pane:activate()
-          check_mux_window:gui_window():focus()
-          stop_checking_tabs = true
-          found_attached_pane = true
+    if check_mux_window:get_workspace() == workspace then
+      stop_checking_tabs = false
+      for _, check_tab in ipairs(check_mux_window:tabs()) do
+        for _, check_pane in ipairs(check_tab:panes()) do
+          if check_pane:get_domain_name() == domain_name then
+            check_tab:activate()
+            check_pane:activate()
+            check_mux_window:gui_window():focus()
+            stop_checking_tabs = true
+            found_attached_pane = true
+            break
+          end
+        end
+        if stop_checking_tabs then
           break
         end
-      end
-      if stop_checking_tabs then
-        break
       end
     end
   end
@@ -93,36 +95,41 @@ function module.configure(config)
         title = "Domains",
         choices = domain_choices,
         fuzzy = true,
-        action = wezterm.action_callback(function(_window, _pane, _id, label)
+        action = wezterm.action_callback(function(window, _pane, _id, label)
           if not label then
             -- No domain selected; do nothing.
             return
           end
-          mux_domain = wezterm.mux.get_domain(label)
+          local mux_domain = wezterm.mux.get_domain(label)
           if mux_domain == nil then
             -- Can't find the selected domain; do nothing.
             -- XXX Ideally, play an error beep? post a notification?
             return
           end
+          local current_workspace = window:active_workspace()
           if mux_domain:state() == "Attached" then
             -- Selected domain is already attached. Raise its windows and
             -- make sure that a domain-relevant pane is active in each. If
             -- we find any such panes, exit.
-            if find_and_raise_domain_panes(label) then
+            if find_and_raise_domain_panes(label, current_workspace) then
               return
             end
           end
-          -- Selected domain is not attached (or has no panes).
+          -- Selected domain is not attached (or has no panes in the workspace).
           if mux_domain:state() ~= "Attached" then
             -- Unattached. So, let's attach!
             mux_domain:attach()
             -- If there are panes, we're done.
-            if find_and_raise_domain_panes(label) then
+            if find_and_raise_domain_panes(label, current_workspace) then
               return
             end
           end
-          -- Attached but no panes. Let's make a new window/tab/pane.
-          wezterm.mux.spawn_window { domain = { DomainName = label } }
+          -- Attached but no panes in the workspace. Let's make a new
+          -- window/tab/pane.
+          wezterm.mux.spawn_window {
+            domain = { DomainName = label },
+            workspace = current_workspace,
+          }
         end),
       },
     }
