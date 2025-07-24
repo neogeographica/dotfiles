@@ -21,7 +21,7 @@ function module.configure(config)
     config.keys,
     {
       key = 'RightArrow',
-      mods = 'CTRL',
+      mods = 'SHIFT|CTRL',
       action = wezterm.action.SwitchWorkspaceRelative(1),
     }
   )
@@ -29,7 +29,7 @@ function module.configure(config)
     config.keys,
     {
       key = 'LeftArrow',
-      mods = 'CTRL',
+      mods = 'SHIFT|CTRL',
       action = wezterm.action.SwitchWorkspaceRelative(-1)
     }
   )
