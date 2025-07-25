@@ -1,4 +1,5 @@
 {{- if eq .chezmoi.os "darwin" }}
 .dircolors
 .config/autostart/
+.chezmoiscripts/check-1password.sh
 {{- end }}
