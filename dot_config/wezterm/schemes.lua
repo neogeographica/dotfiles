@@ -818,6 +818,11 @@ for name, scheme in pairs(allSchemes) do
     end
   end
 end
-table.sort(darkSchemes)
+table.sort(
+  darkSchemes,
+  function (a, b)
+    return string.lower(a) < string.lower(b)
+  end
+)
 
 return darkSchemes
