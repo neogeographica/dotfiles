@@ -42,10 +42,18 @@ end
 -- this same scheme on startup.
 local function applySchemeToAllWindows(color_scheme_name, skipWindow)
   for _, mux_window in ipairs(wezterm.mux.all_windows()) do
-    local window = mux_window:gui_window()
-    if window ~= skipWindow then
-      setColorSchemeForWindow(color_scheme_name, window)
-    end
+    -- Somehow we can sometimes get in a situation where a MUX window does
+    -- not have an associated GUI window. That will raise an error when we
+    -- invoke gui_window(). If that happens use pcall to just swallow the
+    -- error and we go to the next window.
+    pcall(
+      function()
+        local window = mux_window:gui_window()
+        if window ~= skipWindow then
+          setColorSchemeForWindow(color_scheme_name, window)
+        end
+      end
+    )
   end
   local file = io.open(wezterm.config_dir .. "/last_color_scheme.txt","w")
   file:write(color_scheme_name)
