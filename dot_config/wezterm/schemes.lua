@@ -11,7 +11,6 @@ if mode == 'allowlist' then
   return {
     'Poimandres',
     'darkmoss (base16)',
-    'iTerm2 Dark Background',
     'neon-night (Gogh)',
     'Night Owl (Gogh)',
     'Rapture',
