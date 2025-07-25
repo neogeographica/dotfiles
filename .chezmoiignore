@@ -2,6 +2,6 @@
 .chezmoiscripts/check-wezterm.sh
 .config/autostart/
 .dircolors
-.local/share/applications/org.wezfurlong.wezterm.desktop
+.local/share/applications/
 .local/share/wezterm/wezterm.png
 {{- end }}
