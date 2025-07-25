@@ -1,4 +1,7 @@
 {{- if eq .chezmoi.os "darwin" }}
-.dircolors
+.chezmoiscripts/check-wezterm.sh
 .config/autostart/
+.dircolors
+.local/share/applications/org.wezfurlong.wezterm.desktop
+.local/share/wezterm/wezterm.png
 {{- end }}
