@@ -46,6 +46,10 @@ fi
 # zsh-isms below! Hopefully the scripts sourced for app setup will also
 # behave... if not, cross that bridge when we come to it.
 
+# Ensure correct locale.
+export LANG=en_US.UTF-8
+export LC_COLLATE=C
+
 # Always make PATH include my private bin dir.
 PATH="$HOME/.local/bin:$PATH"
 
