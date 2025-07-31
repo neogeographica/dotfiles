@@ -46,12 +46,33 @@ fi
 # zsh-isms below! Hopefully the scripts sourced for app setup will also
 # behave... if not, cross that bridge when we come to it.
 
+# Helper function to add a dir to the front of PATH if and only if it is not
+# already in PATH. Second arg can be specified to force it to the front even
+# if it is already in there (if we're in zsh).
+# Used to try to avoid duplicates and re-ordering when this file is sourced
+# multiple times (subshells).
+# When invoked under zsh, path-uniqueness constraint means that we won't get
+# duplicates, and some duplicates aren't an earthshaking problem. Re-ordering
+# usually isn't a problem either, but some ordering we do really care about.
+# Of course other application-setup scripts that modify PATH may not be this
+# thoughtful about it, but oh well.
+add_path_dir() {
+  NEWDIR="$1"
+  FORCE_FRONT="$2"
+  if [[ -n "$FORCE_FRONT" ]] && [[ -n "$ZSH_VERSION" ]]
+  then
+    PATH="$NEWDIR:$PATH"
+  else
+    if ! [[ ":$PATH:" == *":$NEWDIR:"* ]]
+    then
+      PATH="$NEWDIR:$PATH"
+    fi
+  fi
+}
+
 # Ensure correct locale.
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
-
-# Always make PATH include my private bin dir.
-PATH="$HOME/.local/bin:$PATH"
 
 # Discover installed stuff && set related vars.
 
@@ -77,26 +98,15 @@ fi
 if which go > /dev/null 2>&1
 then
   export GOPATH="$HOME/go"
-  PATH="$GOPATH/bin:$PATH"
+  add_path_dir "$GOPATH/bin"
   export GOROOT=$(go env GOROOT)
 else
   if [[ -x /usr/local/go/bin/go ]]
   then
     export GOPATH="$HOME/go"
-    PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
+    add_path_dir "/usr/local/go/bin"
+    add_path_dir "$GOPATH/bin"
     export GOROOT=$(go env GOROOT)
-  fi
-fi
-
-# asdf vars
-if [[ -r "$HOME/.asdf/asdf.sh" ]]
-then
-  source "$HOME/.asdf/asdf.sh"
-else
-  if [[ "$has_homebrew" == "true" ]]
-  then
-    asdf_sh="$(brew --prefix asdf)/libexec/asdf.sh"
-    [[ -r "$asdf_sh" ]] && source "$asdf_sh"
   fi
 fi
 
@@ -108,7 +118,23 @@ then
   [[ -r "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"  # even for zsh!
 fi
 
-# Finally, anything else hyper-specific to this system.
+# asdf vars
+# Do these after others since asdf shims may need to override other programs.
+if [[ -r "$HOME/.asdf/asdf.sh" ]]
+then
+  source "$HOME/.asdf/asdf.sh"
+else
+  if [[ "$has_homebrew" == "true" ]]
+  then
+    asdf_sh="$(brew --prefix asdf)/libexec/asdf.sh"
+    [[ -r "$asdf_sh" ]] && source "$asdf_sh"
+  fi
+fi
+
+# Anything else hyper-specific to this system.
 [[ -r ~/.profile_local ]] && source ~/.profile_local
+
+# Always make PATH include my private bin dir at the front.
+add_path_dir "$HOME/.local/bin" force-front
 
 export PATH
