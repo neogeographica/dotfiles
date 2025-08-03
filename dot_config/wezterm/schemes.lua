@@ -9,16 +9,12 @@ local mode = 'allowlist'
 
 if mode == 'allowlist' then
   return {
-    'Poimandres',
     'darkmoss (base16)',
-    'MaterialDesignColors',
     'Neon Night (Gogh)',
     'Night Owl (Gogh)',
-    'Panda (Gogh)',
-    'Pulp (terminal.sexy)',
+    'Poimandres',
     'Rapture',
     'Rosé Pine (Gogh)',
-    'Solarized Dark Higher Contrast (Gogh)',
     'Vs Code Dark+ (Gogh)',
   }
 end
