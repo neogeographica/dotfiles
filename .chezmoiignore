@@ -1,7 +1,11 @@
 {{- if eq .chezmoi.os "darwin" }}
 .chezmoiscripts/check-wezterm.sh
 .config/autostart/
+.config/sublime-merge/
+.config/sublime-text/
 .dircolors
 .local/share/applications/
 .local/share/wezterm/wezterm.png
+{{- else }}
+Library/
 {{- end }}

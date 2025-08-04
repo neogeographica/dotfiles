@@ -1,0 +1,32 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"A File Icon",
+		"FindKeyConflicts",
+		"GitGutter",
+		"GitHub Theme",
+		"Gomod",
+		"LSP",
+		"LSP-file-watcher-chokidar",
+		"LSP-gopls",
+		"LSP-json",
+		"LSP-marksman",
+		"LSP-pylsp",
+		"LSP-pyright",
+		"LSP-yaml",
+		"MarkdownPreview",
+		"Night Owl",
+		"Package Control",
+		"SideBarEnhancements",
+		"Theme - Pigment",
+		"Theme - Rose Pine",
+		"Theme - Spacegray",
+		"TOML",
+		"VimL",
+		"WordingStatus",
+	],
+}

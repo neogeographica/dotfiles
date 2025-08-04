@@ -1,0 +1,35 @@
+{
+	"color_scheme": "GitHub Dimmed.sublime-color-scheme",
+	"font_face": "MonaspiceNe Nerd Font Mono",
+	"font_size": {{ dig "sublime-text" "font" "size" 10 . }},
+	"default_font_size": {{ dig "sublime-text" "font" "size" 10 . }},
+	"rulers": [
+		[
+			78,
+			"dotted"
+		],
+		[
+			80,
+			"solid",
+			2
+		]
+	],
+	"translate_tabs_to_spaces": true,
+	"always_show_minimap_viewport": true,
+	"highlight_line": true,
+	"caret_style": "phase",
+	"ensure_newline_at_eof_on_save": true,
+	"theme": "Default Dark.sublime-theme",
+	"highlight_modified_tabs": true,
+	"enable_tab_scrolling": false,
+	"hide_tab_scrolling_buttons": true,
+	"index_files": true,
+{{- if ne .chezmoi.os "darwin" }}
+	"update_check": false,
+	"hardware_acceleration": "opengl",
+{{- end }}
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+}

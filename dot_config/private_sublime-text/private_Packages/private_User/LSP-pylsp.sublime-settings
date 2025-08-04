@@ -1,0 +1,40 @@
+// Settings in here override those in "LSP-pylsp/LSP-pylsp.sublime-settings"
+{
+    "disabled_capabilities": {
+        "completionProvider": true,
+        "definitionProvider": true,
+        "documentHighlightProvider": true,
+        "documentSymbolProvider": true,
+        "hoverProvider": true,
+        "referencesProvider": true,
+        "renameProvider": true,
+        "signatureHelpProvider": true,
+    },
+    "settings": {
+        "pylsp.plugins.jedi_completion.enabled": false,
+        "pylsp.plugins.jedi_definition.enabled": false,
+        "pylsp.plugins.jedi_hover.enabled": false,
+        "pylsp.plugins.jedi_references.enabled": false,
+        "pylsp.plugins.jedi_signature_help.enabled": false,
+        "pylsp.plugins.jedi_symbols.enabled": false,
+
+        "pylsp.plugins.flake8.enabled": false,
+        "pylsp.plugins.pycodestyle.enabled": true,
+        "pylsp.plugins.pydocstyle.enabled": false,
+        "pylsp.plugins.pyflakes.enabled": false,
+        "pylsp.plugins.pylint.enabled": false,
+        "pylsp.plugins.pylsp_mypy.enabled": false,
+        "pylsp.plugins.ruff.enabled": false,
+
+        "pylsp.plugins.pycodestyle.aggressive": 3,
+        "pylsp.plugins.pycodestyle.maxLineLength": 88,
+
+        "pylsp.plugins.autopep8.enabled": false,
+        "pylsp.plugins.ruff.formatEnabled": false,
+        "pylsp.plugins.yapf.enabled": false,
+        "pylsp.plugins.pyls_isort.enabled": false,
+        "pylsp.plugins.black.enabled": true,
+
+        "pylsp.plugins.black.line_length": 88,
+    },
+}
