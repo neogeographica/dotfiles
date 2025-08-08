@@ -1,0 +1,172 @@
+{
+  "name": "Rapture",
+  "author": "",
+  "globals": {
+    "background": "#111e2a",
+    "foreground": "#c0c9e5",
+    "caret": "#c0c9e5",
+    "block_caret": "#c0c9e5",
+    "line_highlight": "#7afde107",
+    "misspelling": "#fc644d",
+    "fold_marker": "#6c9bf5",
+    "accent": "#6c9bf5",
+    "gutter": "",
+    "gutter_foreground": "#92beee40",
+    "line_diff_added": "#7afde120",
+    "line_diff_modified": "#6c9bf5",
+    "line_diff_deleted": "#ff055040",
+    "selection": "#7afde120",
+    "inactive_selection": "#162736",
+    "inactive_selection_foreground": "",
+    "highlight": "#7afde120",
+    "find_highlight": "#7afde120",
+    "find_highlight_foreground": "#6c9bf5",
+    "guide": "#304b6640",
+    "active_guide": "",
+    "stack_guide": "#c0c9e5",
+    "brackets_foreground": "#7afde140",
+    "tags_foreground": "#7afde140",
+    "shadow": "#00000090"
+  },
+  "variables": {
+    "black": "#000",
+    "white": "#c0c9e5",
+    "red": "#fc644d",
+    "green": "#7afde1",
+    "yellow": "#fff09b",
+    "orange": "#fff09b",
+    "blue": "#6c9bf5",
+    "magenta": "#ff4fa1",
+    "cyan": "#64e0ff"
+  },
+  "rules": [
+    {
+      "name": "Shade #1",
+      "foreground": "#304b66",
+      "font_style": 0,
+      "scope": "comment"
+    },
+    {
+      "name": "Shade #2",
+      "foreground": "#426185",
+      "font_style": 0,
+      "scope": "entity.other.attribute-name.class.pug, markup.strikethrough.markdown, punctuation.definition.tag, source.json punctuation.support.type.property-name"
+    },
+    {
+      "name": "Shade #3",
+      "foreground": "#6589b3",
+      "font_style": 0,
+      "scope": "entity.name.tag, markup.list, meta.structure.dictionary.json support.type.property-name, source.ini, support.type.property-name.css"
+    },
+    {
+      "name": "Shade #4",
+      "foreground": "#8aafd1",
+      "font_style": 0,
+      "scope": "markup.quote.markdown, support.type.vendored.property-name.css, variable"
+    },
+    {
+      "name": "Shade #5",
+      "foreground": "#aacbe9",
+      "font_style": 0,
+      "scope": "support.variable"
+    },
+    {
+      "name": "Shade #6",
+      "foreground": "#c0c9e5",
+      "font_style": 0,
+      "scope": "constant.name.attribute.tag.pug, meta.template.expression.js, meta.template.expression.ts, meta.template.expression.tsx, punctuation.definition.metadata.markdown, punctuation.definition.string.begin.markdown, punctuation.definition.string.end.markdown, punctuation.separator.key-value.ini, text.html.derivative"
+    },
+    {
+      "name": "Magenta",
+      "foreground": "#ff4fa1",
+      "font_style": 0,
+      "scope": "constant.other.caps.python, constant.other.class.php, constant.other.php, constant, entity.other.attribute-name.pseudo-class.css, entity.other.attribute-name.pseudo-element.css, entity.other.attribute-name, fenced_code.block.language, keyword.operator.star.sql, punctuation.definition.interpolation, punctuation.definition.template-expression, punctuation.section.embedded.begin.php, punctuation.section.embedded.begin.ruby, punctuation.section.embedded.end.php, punctuation.section.embedded.end.ruby, source.css keyword.other.unit, support.constant.core.php, support.constant.ext.php, support.type.exception.python"
+    },
+    {
+      "name": "Pink",
+      "foreground": "#ffabd0",
+      "font_style": 0,
+      "scope": "entity.name.tag.css, source.css entity.name.tag.wildcard, source.css variable, variable.language.special.self.python, variable.language.this.js, variable.language.this.ts, variable.language.this.tsx"
+    },
+    {
+      "name": "Pale purple",
+      "foreground": "#d190d1",
+      "font_style": 0,
+      "scope": "markup.italic, meta.function.decorator.python, meta.group.regexp, variable.language.super"
+    },
+    {
+      "name": "Purple",
+      "foreground": "#c45ace",
+      "font_style": 0,
+      "scope": "keyword.other.important, punctuation.definition.decorator.python, string.regexp"
+    },
+    {
+      "name": "Blue",
+      "foreground": "#6c9bf5",
+      "font_style": 0,
+      "scope": "entity.name.function, meta.attribute.data-x entity.other.attribute-name.html, meta.function-call.generic.python, string.other.link.description.markdown, string.other.link.title.markdown, support.function"
+    },
+    {
+      "name": "Cyan",
+      "foreground": "#64e0ff",
+      "font_style": 0,
+      "scope": "constant.character.entity, entity.name.section.group-title.ini, entity.name.type, entity.other.attribute-name.id.css, entity.other.attribute-name.id.pug, entity.other.inherited-class, keyword.other.alias.sql, keyword.other.DDL.create.II.sql, markup.bold, meta.attribute.id entity.other.attribute-name, source.css support.function, source.php support.function, support.class, support.constant, support.function.magic.python, support.type.python, support.variable.magic.python"
+    },
+    {
+      "name": "Aqua",
+      "foreground": "#7afde1",
+      "font_style": 0,
+      "scope": "entity.other.attribute-name.class.css, markup.heading, markup.inline.raw, punctuation.definition.markdown, source.sql punctuation.definition.string, string, text.html meta.embedded source.js string, text.html string, text.html.markdown string, text.html.php string, text.xml string"
+    },
+    {
+      "name": "Green",
+      "foreground": "#4dad99",
+      "font_style": 0,
+      "scope": "punctuation.definition.string, text.html meta.embedded source.js punctuation.definition.string, text.html.php punctuation.definition.string"
+    },
+    {
+      "name": "Yellow",
+      "foreground": "#fff09b",
+      "font_style": 0,
+      "scope": "keyword.operator, keyword, meta.attribute.href.html string, meta.attribute.src.html string, meta.image, meta.link, punctuation.definition.block.sequence.item.yaml, punctuation.separator.key-value.makefile, source.css variable.parameter.url, source.js support.type, storage"
+    },
+    {
+      "name": "Dark yellow",
+      "foreground": "#a39859",
+      "font_style": 0,
+      "scope": "meta.attribute.href.html punctuation.definition.string, meta.attribute.src.html punctuation.definition.string"
+    },
+    {
+      "name": "Orange",
+      "foreground": "#ff9b49",
+      "font_style": 0,
+      "scope": "invalid.deprecated.entity.other.attribute-name.html, source.css constant.numeric, source.css entity.other.attribute-name, string.regexp meta.assertion, support.type.builtin.ts, support.type.builtin.tsx, support.type.primitive.ts, support.type.primitive.tsx"
+    },
+    {
+      "name": "Red",
+      "foreground": "#fc644d",
+      "font_style": 0,
+      "scope": "entity.other.attribute-name.parent-selector.css, source.css entity.name.tag.reference, storage.modifier.sql"
+    },
+    {
+      "name": "Font Bold",
+      "font_style": "bold",
+      "scope": "invalid.deprecated.entity.other.attribute-name.html, markup.bold.markdown"
+    },
+    {
+      "name": "Font Italic",
+      "font_style": "italic",
+      "scope": "markup.italic.markdown"
+    },
+    {
+      "name": "Font Strikethrough",
+      "font_style": "strikethrough",
+      "scope": "markup.strikethrough.markdown"
+    },
+    {
+      "name": "Font Underline",
+      "font_style": "underline",
+      "scope": "entity.other.inherited-class"
+    }
+  ]
+}
