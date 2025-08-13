@@ -1,5 +1,5 @@
 {
-	"color_scheme": "Rapture.sublime-color-scheme",
+	"color_scheme": "{{ dig "sublime-text" "color_scheme" "Rapture.sublime-color-scheme" . }}",
 	"font_face": "MonaspiceNe Nerd Font Mono",
 	"font_size": {{ dig "sublime-text" "font" "size" 10 . }},
 	"default_font_size": {{ dig "sublime-text" "font" "size" 10 . }},
@@ -22,7 +22,7 @@
 	"scroll_past_end": true,
 	"trim_trailing_white_space_on_save": "all",
 	"ensure_newline_at_eof_on_save": true,
-	"theme": "Default Dark.sublime-theme",
+	"theme": "{{ dig "sublime-text" "theme" "Default Dark.sublime-theme" . }}",
 	"highlight_modified_tabs": true,
 	"enable_tab_scrolling": false,
 	"hide_tab_scrolling_buttons": true,
