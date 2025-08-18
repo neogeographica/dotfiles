@@ -15,7 +15,6 @@ if mode == 'allowlist' then
     'Poimandres',
     'Rapture',
     'Rosé Pine (Gogh)',
-    'Vs Code Dark+ (Gogh)',
   }
 end
 
