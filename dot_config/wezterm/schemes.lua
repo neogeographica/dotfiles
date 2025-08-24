@@ -14,7 +14,6 @@ if mode == 'allowlist' then
     'Night Owl (Gogh)',
     'Poimandres',
     'Rapture',
-    'Rosé Pine (Gogh)',
   }
 end
 
