@@ -47,6 +47,9 @@ HISTSIZE=4000
 SAVEHIST=4000
 HISTFILE="$HOME/.zsh_history"
 
+# Nicer mark (solid square) for end of newline-less lines.
+PROMPT_EOL_MARK=$(echo -n "\uf04d")
+
 # Always use emacs-mode keymap.
 bindkey -e
 
