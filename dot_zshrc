@@ -86,10 +86,10 @@ user_prompt="%1{❯%}"
 root_prompt="#"
 case "$TERM" in
   xterm-color|*-256color|xterm-kitty)
-    PS1="%b%u%s%f%k%F{green}%n@%m%f:%B%F{blue}%2~%f%(!.${root_prompt}.${user_prompt})%b "
+    PS1="%b%u%s%f%k%F{green}%n@%m%f:%B%F{blue}%40<..<%2~%<<%f%(!.${root_prompt}.${user_prompt})%b "
     ;;
   *)
-    PS1="%n@%m:%2~%(!.${root_prompt}.${user_prompt}) "
+    PS1="%n@%m:%40<..<%2~%<<%(!.${root_prompt}.${user_prompt}) "
     ;;
 esac
 
@@ -98,7 +98,7 @@ esac
 case "$TERM" in
   xterm*|rxvt*)
     autoload -Uz vcs_info
-    zstyle ':vcs_info:*' formats ' %s(%F{red}%b%f)'
+    zstyle ':vcs_info:*' formats ' %s(%10>..>%F{red}%b%f%<<)'
     setopt transientrprompt
     setopt promptsubst
     RPROMPT='${vcs_info_msg_0_}'
