@@ -93,9 +93,15 @@ case "$TERM" in
     ;;
 esac
 
-# And use fancy window titles if this is an xterm.
+# If this is an xterm, put VCS info (if available) in "right prompt" and set
+# window titles
 case "$TERM" in
   xterm*|rxvt*)
+    autoload -Uz vcs_info
+    zstyle ':vcs_info:*' formats ' %s(%F{red}%b%f)'
+    setopt transientrprompt
+    setopt promptsubst
+    RPROMPT='${vcs_info_msg_0_}'
     __el_LAST_EXECUTED_COMMAND=""
     dir_and_lastcmd_title() {
       __el_FIRSTPART=""
@@ -123,6 +129,7 @@ case "$TERM" in
       printf "%s: %s" "$__el_FIRSTPART" "$__el_SECONDPART"
     }
     precmd() {
+      vcs_info
       printf "\033]0;%s\007" "$(dir_and_lastcmd_title)"
     }
     preexec() {
