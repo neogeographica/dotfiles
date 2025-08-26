@@ -86,10 +86,10 @@ user_prompt="%1{❯%}"
 root_prompt="#"
 case "$TERM" in
   xterm-color|*-256color|xterm-kitty)
-    PS1="%b%u%s%f%k%F{green}%n@%m%f:%B%F{blue}%~%f%(!.${root_prompt}.${user_prompt})%b "
+    PS1="%b%u%s%f%k%F{green}%n@%m%f:%B%F{blue}%2~%f%(!.${root_prompt}.${user_prompt})%b "
     ;;
   *)
-    PS1="%n@%m:%~%(!.${root_prompt}.${user_prompt}) "
+    PS1="%n@%m:%2~%(!.${root_prompt}.${user_prompt}) "
     ;;
 esac
 
