@@ -3,4 +3,7 @@
 	"font_size": {{ dig "sublime-merge" "font" "size" 10 . }},
 	"theme": "auto",
 	"translate_tabs_to_spaces": true,
+{{- if ne .chezmoi.os "darwin" }}
+	"update_check": false,
+{{- end }}
 }
