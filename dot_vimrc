@@ -78,5 +78,5 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 15, 4)<CR>
 map <leader>n :setlocal nu! rnu!<cr>
 map <leader>p :setlocal paste!<cr>
 
-inoremap jk <esc>
-cnoremap jk <C-c>
+inoremap kk <esc>
+cnoremap kk <C-c>
