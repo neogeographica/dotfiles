@@ -248,20 +248,21 @@ then
   export FZF_DEFAULT_OPTS="\
     --style full \
     --input-label ' Input ' --header-label ' File Type ' \
+    --with-shell='sh -c' \
     --preview 'fzf-preview.sh {}' \
     --bind 'result:transform-list-label:
-        if [[ -z \$FZF_QUERY ]]; then
+        if [ -z \$FZF_QUERY ]; then
           echo \" \$FZF_MATCH_COUNT items \"
         else
           echo \" \$FZF_MATCH_COUNT matches for [\$FZF_QUERY] \"
         fi' \
-    --bind 'focus:transform-preview-label:[[ -n {} ]] && printf \" Previewing [%s] \" \"\$(basename {})\"' \
+    --bind 'focus:transform-preview-label:[ -n {} ] && printf \" Previewing [%s] \" \"\$(basename {})\"' \
     --bind 'focus:+transform-header:file --brief {} || echo \"No file selected\"'"
   export FZF_CTRL_T_OPTS="--select-1 --exit-0"
   export FZF_ALT_C_OPTS="\
     --select-1 --exit-0 \
     --preview 'tree -C {} | head -200' \
-    --bind 'focus:transform-preview-label:[[ -n {} ]] && printf \" Tree at [%s] \" \"\$(basename {})\"'"
+    --bind 'focus:transform-preview-label:[ -n {} ] && printf \" Tree at [%s] \" \"\$(basename {})\"'"
   export FZF_CTRL_R_OPTS="\
     --style default \
     --preview 'echo {}' \
@@ -279,13 +280,16 @@ then
     shift
     case "$command" in
       cd)
-        fzf --preview 'tree -C {} | head -200' --bind 'focus:transform-preview-label:[[ -n {} ]] && printf " Tree at [%s] " "$(basename {})"' "$@"
+        fzf --preview 'tree -C {} | head -200' --bind 'focus:transform-preview-label:[ -n {} ] && printf " Tree at [%s] " "$(basename {})"' "$@"
         ;;
       unset|export)
-        fzf --preview "eval 'echo \$'{}" --bind 'focus:transform-preview-label:[[ -n {} ]] && printf " Value of [%s] " {}' "$@"
+        fzf --preview "eval 'echo \$'{}" --bind 'focus:transform-preview-label:[ -n {} ] && printf " Value of [%s] " {}' "$@"
         ;;
-      unalias|kill|ssh|telnet)
+      unalias|ssh|telnet)
         fzf --preview '' --bind 'focus:transform-preview-label:' "$@"
+        ;;
+      kill)
+        fzf --preview '' --header-label '' --bind 'focus:transform-preview-label:' "$@"
         ;;
       *)
         fzf --preview 'fzf-preview.sh {}' "$@"
