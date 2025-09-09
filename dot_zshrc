@@ -222,9 +222,10 @@ has_fzf_and_deps=$has_fzf
 which fd > /dev/null 2>&1 || has_fzf_and_deps=false
 which tree > /dev/null 2>&1 || has_fzf_and_deps=false
 which bat > /dev/null 2>&1 || has_fzf_and_deps=false
+which chafa > /dev/null 2>&1 || has_fzf_and_deps=false
 if [[ "$has_fzf" == "true" ]]
 then
-  [[ "$has_fzf_and_deps" == "true" ]] || _dbg_init_log "* not all fzf dependencies (fd, tree, bat) installed"
+  [[ "$has_fzf_and_deps" == "true" ]] || _dbg_init_log "* not all fzf dependencies (fd, tree, bat, chafa) installed"
 else
   _dbg_init_log "* fzf not installed"
 fi
@@ -232,9 +233,41 @@ fi
 # If so, enable and customize fzf.
 if [[ "$has_fzf_and_deps" == "true" ]]
 then
+  # XXX May want to set "scheme" in various places? Don't see a huge need for
+  # XXX it yet though.
+  # https://github.com/junegunn/fzf?tab=readme-ov-file#customizing-for-different-types-of-input
   export FZF_DEFAULT_COMMAND='fd --strip-cwd-prefix --hidden --follow --exclude .git'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_ALT_C_COMMAND='fd --type d --strip-cwd-prefix --hidden --follow --exclude .git'
+  # XXX Docs recommend against specifying --preview in default opts, but I
+  # XXX don't see a good way to then get preview behavior for the generic
+  # XXX "fzf" command if used for file browsing (which is what I use it for).
+  # XXX Probably I should instead make some alias that runs fzf with these
+  # XXX options. But currently, I'm setting default preview behavior here and
+  # XXX then overriding it as necessary below.
+  export FZF_DEFAULT_OPTS="\
+    --style full \
+    --input-label ' Input ' --header-label ' File Type ' \
+    --preview 'fzf-preview.sh {}' \
+    --bind 'result:transform-list-label:
+        if [[ -z \$FZF_QUERY ]]; then
+          echo \" \$FZF_MATCH_COUNT items \"
+        else
+          echo \" \$FZF_MATCH_COUNT matches for [\$FZF_QUERY] \"
+        fi' \
+    --bind 'focus:transform-preview-label:[[ -n {} ]] && printf \" Previewing [%s] \" \"\$(basename {})\"' \
+    --bind 'focus:+transform-header:file --brief {} || echo \"No file selected\"'"
+  export FZF_CTRL_T_OPTS="--select-1 --exit-0"
+  export FZF_ALT_C_OPTS="\
+    --select-1 --exit-0 \
+    --preview 'tree -C {} | head -200' \
+    --bind 'focus:transform-preview-label:[[ -n {} ]] && printf \" Tree at [%s] \" \"\$(basename {})\"'"
+  export FZF_CTRL_R_OPTS="\
+    --style default \
+    --preview 'echo {}' \
+    --preview-window down:4:hidden:wrap \
+    --bind '?:toggle-preview' \
+    --bind 'focus:transform-preview-label:'"
   _fzf_compgen_path() {
     fd --hidden --follow --exclude ".git" . "$1"
   }
@@ -245,9 +278,18 @@ then
     local command=$1
     shift
     case "$command" in
-      cd|z)         fzf --preview 'tree -C {} | head -200'   "$@" ;;
-      export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
-      *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
+      cd)
+        fzf --preview 'tree -C {} | head -200' --bind 'focus:transform-preview-label:[[ -n {} ]] && printf " Tree at [%s] " "$(basename {})"' "$@"
+        ;;
+      unset|export)
+        fzf --preview "eval 'echo \$'{}" --bind 'focus:transform-preview-label:[[ -n {} ]] && printf " Value of [%s] " {}' "$@"
+        ;;
+      unalias|kill|ssh|telnet)
+        fzf --preview '' --bind 'focus:transform-preview-label:' "$@"
+        ;;
+      *)
+        fzf --preview 'fzf-preview.sh {}' "$@"
+        ;;
     esac
   }
   if [[ -r ~/.fzf.zsh ]]
