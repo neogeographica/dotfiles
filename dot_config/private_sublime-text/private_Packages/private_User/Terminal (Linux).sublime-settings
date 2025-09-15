@@ -1,4 +1,4 @@
-// Terminal Settings - User
+// Terminal OS Specific Settings - User
 {
     "terminal": "wezterm",
     "parameters": [
