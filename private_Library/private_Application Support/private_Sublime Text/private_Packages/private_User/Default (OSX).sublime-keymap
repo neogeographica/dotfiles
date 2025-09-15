@@ -1,0 +1,14 @@
+[
+    {
+        "keys": [
+            "f10"
+        ],
+        "command": "open_terminal"
+    },
+    {
+        "keys": [
+            "shift+f10"
+        ],
+        "command": "open_terminal_project_folder"
+    }
+]
