@@ -1,0 +1,14 @@
+// Terminal OS Specific Settings - User
+{
+    "terminal": "open",
+    "parameters": [
+        "-n",
+        "-W",
+        "-a",
+        "/Applications/WezTerm.app",
+        "--args",
+        "start",
+        "--cwd",
+        "%CWD%"
+    ]
+}
