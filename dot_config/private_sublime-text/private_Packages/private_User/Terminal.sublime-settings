@@ -1,0 +1,9 @@
+// Terminal Settings - User
+{
+    "terminal": "wezterm",
+    "parameters": [
+        "start",
+        "--cwd",
+        "%CWD%"
+    ]
+}
