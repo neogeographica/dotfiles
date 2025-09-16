@@ -269,6 +269,7 @@ then
     --bind 'focus:transform-preview-label:[ -n {} ] && printf \" Tree at [%s] \" \"\$(basename {})\"'"
   export FZF_CTRL_R_OPTS="\
     --style default \
+    --wrap-sign='' \
     --preview 'echo {}' \
     --preview-window down:4:hidden:wrap \
     --bind '?:toggle-preview' \
