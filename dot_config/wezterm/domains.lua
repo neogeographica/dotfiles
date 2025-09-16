@@ -74,7 +74,8 @@ function module.configure(config)
 
   -- Use the domain for this host on startup. Note that if a Linux desktop
   -- file is used to launch Wezterm and it specifies other args, this will
-  -- be ignored.
+  -- be ignored. Which I don't think really matters if just connection to
+  -- local here, but does matter if doing something else.
   -- XXX Jankiness of unix/ssh domains not worth the persistence... will
   -- just use a regular local terminal.
 --  config.default_gui_startup_args = { 'connect', this_host_domain_name }
