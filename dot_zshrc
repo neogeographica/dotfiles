@@ -41,10 +41,14 @@ else
 fi
 
 # Set zsh history options.
+setopt histfindnodups
+setopt histignorealldups
 setopt histignoredups
+setopt histnostore
+setopt histsavenodups
 setopt sharehistory
-HISTSIZE=4000
-SAVEHIST=4000
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
 HISTFILE="$HOME/.zsh_history"
 
 # Nicer mark (solid square) for end of newline-less lines.
