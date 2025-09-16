@@ -1,5 +1,4 @@
 {{- if eq .chezmoi.os "darwin" }}
-.chezmoiscripts/check-wezterm.sh
 .config/autostart/
 .config/sublime-merge/
 .config/sublime-text/

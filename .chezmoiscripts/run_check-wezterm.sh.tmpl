@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+{{- if eq .chezmoi.os "darwin" }}
+WEZTERM_EXE="/Applications/WezTerm.app/Contents/MacOS/wezterm"
+if ! [[ -x "$WEZTERM_EXE" ]]
+then
+  echo
+  echo "*** WARNING no executable found at $WEZTERM_EXE"
+  echo "*** Without wezterm, Sublime Text plugin Terminal will be misconfigured."
+  echo
+fi
+{{- else}}
+if which wezterm &> /dev/null
+then
+  true
+else
+  echo
+  echo "*** WARNING no wezterm executable found in PATH."
+  echo "*** .local/share/applications/org.wezfurlong.wezterm.desktop will fail."
+  echo "*** Also, without wezterm, Sublime Text plugin Terminal will be misconfigured."
+  echo
+fi
+{{- end }}
