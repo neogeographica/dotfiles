@@ -9,9 +9,7 @@ local mode = 'allowlist'
 
 if mode == 'allowlist' then
   return {
-    'darkmoss (base16)',
     'Neon Night (Gogh)',
-    'Night Owl (Gogh)',
     'Poimandres',
     'Rapture',
   }
