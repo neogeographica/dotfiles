@@ -119,7 +119,8 @@ function module.configure(config)
   -- XXX MACOS_FORCE_DISABLE_SHADOW possibly needed for performance issues in
   -- macOS 26. Testing.
   if util.platform.is_mac then
-    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE|MACOS_FORCE_DISABLE_SHADOW"
+--    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE|MACOS_FORCE_DISABLE_SHADOW"
+    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
   end
   config.enable_scroll_bar = true
   -- Set font family and size.
