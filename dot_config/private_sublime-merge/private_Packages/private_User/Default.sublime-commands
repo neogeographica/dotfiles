@@ -1,0 +1,14 @@
+[
+    {
+        "caption": "Update Submodules",
+        "command": "git",
+        "args": {
+            "argv": [
+                "submodule",
+                "update",
+                "--recursive",
+                "--init"
+            ]
+        }
+    }
+]
