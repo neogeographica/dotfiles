@@ -1,4 +1,6 @@
 font-family = MonaspiceNe Nerd Font Mono
+font-family = MonaspiceNe NFM
+font-family = Noto Color Emoji
 font-size = {{ dig "ghostty" "font" "size" 10 . }}
 
 theme = Rapture
@@ -6,4 +8,17 @@ theme = Rapture
 cursor-style = block
 cursor-style-blink = false
 
+bell-features = system,attention,title
+
 shell-integration-features = no-cursor,ssh-terminfo,ssh-env
+
+window-padding-x = 6
+window-padding-y = 6
+
+adjust-cell-height = 8%
+{{- if eq .chezmoi.os "darwin" }}
+
+font-thicken = true
+font-thicken-strength = 64
+adjust-cell-width = -8%
+{{- end }}
