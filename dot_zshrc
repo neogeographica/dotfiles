@@ -67,7 +67,8 @@ then
   wezterm_sh="/Applications/WezTerm.app/Contents/Resources/wezterm.sh"
   if [[ -r "$wezterm_sh" ]]
   then
-    source "$wezterm_sh"
+    # Only source this if wezterm is the current terminal being used.
+    [[ -n "$WEZTERM_EXECUTABLE" ]] && source "$wezterm_sh"
   else
     _dbg_init_log "* wezterm not installed"
   fi
