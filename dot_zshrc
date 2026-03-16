@@ -89,7 +89,7 @@ fi
 user_prompt="%1{❯%}"
 root_prompt="#"
 case "$TERM" in
-  xterm-color|*-256color|xterm-kitty)
+  xterm-color|*-256color|xterm-kitty|xterm-ghostty)
     PS1="%b%u%s%f%k%F{green}%n@%m%f:%B%F{blue}%40<..<%2~%<<%f%(!.${root_prompt}.${user_prompt})%b "
     ;;
   *)

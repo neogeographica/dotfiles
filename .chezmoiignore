@@ -4,6 +4,7 @@
 .config/sublime-text/
 .dircolors
 .local/share/applications/
+.local/share/icons/
 .local/share/wezterm/wezterm.png
 {{- else }}
 Library/
