@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+if which ghostty &> /dev/null
+then
+  true
+else
+  echo
+  echo "*** WARNING no ghostty executable found in PATH."
+{{- if eq .chezmoi.os "darwin" }}
+  echo "*** Without ghostty, Sublime Text plugin Terminal will be misconfigured."
+{{- else}}
+  echo "*** .local/share/applications/com.mitchellh.ghostty.desktop will fail."
+  echo "*** Also, without ghostty, Sublime Text plugin Terminal will be misconfigured."
+{{- end }}
+  echo
+fi

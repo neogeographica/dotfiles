@@ -1,9 +1,7 @@
 // Terminal OS Specific Settings - User
 {
-    "terminal": "wezterm",
+    "terminal": "ghostty",
     "parameters": [
-        "start",
-        "--cwd",
-        "%CWD%"
+        "--working-directory=%CWD%"
     ]
 }

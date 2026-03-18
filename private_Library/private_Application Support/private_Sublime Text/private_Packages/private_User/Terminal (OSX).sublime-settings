@@ -1,14 +1,8 @@
 // Terminal OS Specific Settings - User
 {
-    "terminal": "open",
+    "terminal": "ghostty",
     "parameters": [
-        "-n",
-        "-W",
-        "-a",
-        "/Applications/WezTerm.app",
-        "--args",
-        "start",
-        "--cwd",
-        "%CWD%"
+        "--working-directory=%CWD%",
+        "--quit-after-last-window-closed=true"
     ]
 }

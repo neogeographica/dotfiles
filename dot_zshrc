@@ -76,6 +76,19 @@ else
   which wezterm > /dev/null 2>&1 || _dbg_init_log "* wezterm not installed"
 fi
 
+# Detect if everything needed for ghostty is present.
+if which ghostty > /dev/null 2>&1
+then
+  if which kitten > /dev/null 2>&1
+  then
+    true
+  else
+    _dbg_init_log "* kitten not installed (for image rendering in ghostty)"
+  fi
+else
+  _dbg_init_log "* ghostty not installed"
+fi
+
 # Make "less" more friendly for non-text input files.
 if which lesspipe > /dev/null 2>&1
 then
