@@ -268,6 +268,8 @@ then
     --input-label ' Input ' --header-label ' File Type ' \
     --with-shell='sh -c' \
     --preview 'fzf-preview.sh {}' \
+    --preview-window wrap-word \
+    --bind ctrl-space:toggle-preview-wrap-word \
     --bind 'result:transform-list-label:
         if [ -z \$FZF_QUERY ]; then
           echo \" \$FZF_MATCH_COUNT items \"
@@ -279,13 +281,16 @@ then
   export FZF_CTRL_T_OPTS="--select-1 --exit-0"
   export FZF_ALT_C_OPTS="\
     --select-1 --exit-0 \
+    --wrap-sign='' \
     --preview 'tree -C {} | head -200' \
+    --preview-window nowrap \
+    --bind ctrl-space:toggle-preview-wrap \
     --bind 'focus:transform-preview-label:[ -n {} ] && printf \" Tree at [%s] \" \"\$(basename {})\"'"
   export FZF_CTRL_R_OPTS="\
     --style default \
     --wrap-sign='' \
     --preview 'echo {}' \
-    --preview-window down:4:hidden:wrap \
+    --preview-window down:4:hidden:wrap-word \
     --bind '?:toggle-preview' \
     --bind 'focus:transform-preview-label:'"
   _fzf_compgen_path() {
@@ -299,7 +304,7 @@ then
     shift
     case "$command" in
       cd)
-        fzf --preview 'tree -C {} | head -200' --bind 'focus:transform-preview-label:[ -n {} ] && printf " Tree at [%s] " "$(basename {})"' "$@"
+        fzf --preview 'tree -C {} | head -200' --wrap-sign='' --preview-window nowrap --bind ctrl-space:toggle-preview-wrap --bind 'focus:transform-preview-label:[ -n {} ] && printf " Tree at [%s] " "$(basename {})"' "$@"
         ;;
       unset|export)
         fzf --preview "eval 'echo \$'{}" --bind 'focus:transform-preview-label:[ -n {} ] && printf " Value of [%s] " {}' "$@"
