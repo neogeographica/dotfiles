@@ -36,7 +36,7 @@
 # so we will test for login shell the old-fashioned way.
 if echo $0 | grep -e ^\- > /dev/null 2>&1
 then
-  if [[ "x$SOURCING_PROFILE_FROM_ZSHENV" != "xtrue" ]]
+  if [ "x$SOURCING_PROFILE_FROM_ZSHENV" != "xtrue" ]
   then
     return
   fi
@@ -59,11 +59,13 @@ fi
 add_path_dir() {
   NEWDIR="$1"
   FORCE_FRONT="$2"
-  if [[ -n "$FORCE_FRONT" ]] && [[ -n "$ZSH_VERSION" ]]
+  if [ -n "$FORCE_FRONT" -a -n "$ZSH_VERSION" ]
   then
     PATH="$NEWDIR:$PATH"
   else
-    if ! [[ ":$PATH:" == *":$NEWDIR:"* ]]
+    SUPERSTRING=":$PATH:"
+    SUBSTRING=":$NEWDIR:"
+    if [ "${SUPERSTRING#*"$SUBSTRING"}" = "$SUPERSTRING" ]
     then
       PATH="$NEWDIR:$PATH"
     fi
@@ -81,14 +83,14 @@ export LC_COLLATE=C
 # interactive shells.
 
 # cargo/rust path
-if [[ -r "$HOME/.cargo/env" ]]
+if [ -r "$HOME/.cargo/env" ]
 then
-  source "$HOME/.cargo/env"
+  . "$HOME/.cargo/env"
 fi
 
 # homebrew vars
 has_homebrew=false
-if [[ -x /opt/homebrew/bin/brew ]]
+if [ -x /opt/homebrew/bin/brew ]
 then
   has_homebrew=true
   eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -101,7 +103,7 @@ then
   add_path_dir "$GOPATH/bin"
   export GOROOT=$(go env GOROOT)
 else
-  if [[ -x /usr/local/go/bin/go ]]
+  if [ -x /usr/local/go/bin/go ]
   then
     export GOPATH="$HOME/go"
     add_path_dir "/usr/local/go/bin"
@@ -111,28 +113,33 @@ else
 fi
 
 # nvm functions
-if [[ -r "$HOME/.nvm/nvm.sh" ]]
+if [ -r "$HOME/.nvm/nvm.sh" ]
 then
   export NVM_DIR="$HOME/.nvm"
-  source "$NVM_DIR/nvm.sh"
-  [[ -r "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"  # even for zsh!
+  . "$NVM_DIR/nvm.sh"
+  if [ -n "$ZSH_VERSION" -o -n "$BASH_VERSION" ]
+  then
+    [ -r "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # even for zsh!
+  fi
 fi
 
 # asdf vars
 # Do these after others since asdf shims may need to override other programs.
-if [[ -r "$HOME/.asdf/asdf.sh" ]]
+if [ -r "$HOME/.asdf/asdf.sh" ]
 then
-  source "$HOME/.asdf/asdf.sh"
+  ASDF_DIR="$HOME/.asdf"
+  . "$ASDF_DIR/asdf.sh"
 else
-  if [[ "$has_homebrew" == "true" ]]
+  if [ "$has_homebrew" == "true" ]
   then
-    asdf_sh="$(brew --prefix asdf)/libexec/asdf.sh"
-    [[ -r "$asdf_sh" ]] && source "$asdf_sh"
+    ASDF_DIR="$(brew --prefix asdf)/libexec"
+    asdf_sh="$ASDF_DIR/asdf.sh"
+    [ -r "$asdf_sh" ] && . "$asdf_sh"
   fi
 fi
 
 # Anything else hyper-specific to this system.
-[[ -r ~/.profile_local ]] && source ~/.profile_local
+[ -r ~/.profile_local ] && . ~/.profile_local
 
 # Always make PATH include my private bin dir at the front.
 add_path_dir "$HOME/.local/bin" force-front
