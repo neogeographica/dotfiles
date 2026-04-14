@@ -6,7 +6,7 @@ local module = {}
 
 function module.configure(config)
   -- Add my custom PROMPT_EOL_MARK character to selection word boundary.
-  config.selection_word_boundary = " \t'\"│`|:;,()[]{}<>$" .. utf8.char(0xf04d)
+  config.selection_word_boundary = " \t'\"│`|:;,()[]{}<>$=" .. utf8.char(0xf04d)
   -- Disable "are you sure" prompt when closing tab.
   -- XXX Trying to disable tab close confirmation using all the mechanisms
   -- below. This works for the ctrl-shift-w key shortcut, and also works for
