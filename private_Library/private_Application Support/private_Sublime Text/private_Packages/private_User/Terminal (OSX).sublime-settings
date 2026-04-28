@@ -1,8 +1,7 @@
 // Terminal OS Specific Settings - User
 {
-    "terminal": "/Applications/Ghostty.app/Contents/MacOS/ghostty",
+    "terminal": "/Users/joel/.local/bin/ghostty-window-at.sh",
     "parameters": [
-        "--working-directory=%CWD%",
-        "--quit-after-last-window-closed=true"
+        "%CWD%"
     ]
 }

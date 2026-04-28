@@ -5,5 +5,7 @@
 	"translate_tabs_to_spaces": true,
 {{- if ne .chezmoi.os "darwin" }}
 	"update_check": false,
+{{- else }}
+	"terminal_command": "{{ .chezmoi.homeDir }}/.local/bin/ghostty-window-at.sh $dir",
 {{- end }}
 }
