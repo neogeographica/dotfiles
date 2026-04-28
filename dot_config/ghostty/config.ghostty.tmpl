@@ -10,8 +10,15 @@ selection-word-chars = " \t'\"│`|:;,()[]{}<>$="
 
 cursor-style = block
 cursor-style-blink = false
+{{- if eq .chezmoi.os "darwin" }}
 
 bell-features = system,attention,title
+{{- else }}
+
+bell-features = audio,attention,title
+bell-audio-path = /usr/share/sounds/freedesktop/stereo/window-attention.oga
+bell-audio-volume = 1.0
+{{- end }}
 
 shell-integration-features = no-cursor,no-title,ssh-terminfo,ssh-env
 
