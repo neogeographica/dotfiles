@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+{{- if eq .chezmoi.os "darwin" }}
+BWARDEN_EXE="/Applications/Bitwarden.app/Contents/MacOS/Bitwarden"
+{{- else}}
+# XXX Need to dig in here to find the actual executable in the Flatpak.
+BWARDEN_EXE="$HOME/.var/app/com.bitwarden.desktop"
+{{- end }}
+if ! [[ -x "$BWARDEN_EXE" ]]
+then
+  echo
+  echo "*** WARNING no executable found at $BWARDEN_EXE"
+  echo "*** Without Bitwarden running, some ssh key management will fail."
+  echo
+fi

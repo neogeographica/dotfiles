@@ -76,6 +76,13 @@ add_path_dir() {
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
 
+# SSH agent for tools that don't pay attention to IdentityAgent in ssh config.
+{{- if eq .chezmoi.os "darwin" }}
+export SSH_AUTH_SOCK="$HOME/.bitwarden-ssh-agent.sock"
+{{- else }}
+export SSH_AUTH_SOCK="$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
+{{- end }}
+
 # Discover installed stuff && set related vars.
 
 # Note that any debug logging for missing things will be done in .zshrc, to
