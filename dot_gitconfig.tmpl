@@ -3,6 +3,11 @@
 	email = joel.baxter@neogeographica.com
 [includeIf "gitdir:~/Projects/Work/"]
 	path = ~/Projects/Work/.gitconfig
+{{- $workdotdir := (dig "git" "workdotdir" "" .) }}
+{{- if not (eq $workdotdir "") }}
+[includeIf "gitdir:~/.{{ $workdotdir }}/"]
+	path = ~/Projects/Work/.gitconfig
+{{- end }}
 [core]
 	excludesfile = ~/.gitignore_global
 [init]
