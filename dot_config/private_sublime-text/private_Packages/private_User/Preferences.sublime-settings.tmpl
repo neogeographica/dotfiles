@@ -27,6 +27,11 @@
 	"enable_tab_scrolling": false,
 	"hide_tab_scrolling_buttons": true,
 	"show_full_path": true,
+{{- if ne .chezmoi.os "darwin" }}
+	"terminal_command": "ghostty +new-window --working-directory=\"$dir\"",
+{{- else }}
+	"terminal_command": "{{ .chezmoi.homeDir }}/.local/bin/ghostty-window-at.sh \"$dir\"",
+{{- end }}
 	"index_files": true,
 {{- if ne .chezmoi.os "darwin" }}
 	"update_check": false,

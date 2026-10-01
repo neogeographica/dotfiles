@@ -1,7 +1,0 @@
-// Terminal OS Specific Settings - User
-{
-    "terminal": "/Users/joel/.local/bin/ghostty-window-at.sh",
-    "parameters": [
-        "%CWD%"
-    ]
-}

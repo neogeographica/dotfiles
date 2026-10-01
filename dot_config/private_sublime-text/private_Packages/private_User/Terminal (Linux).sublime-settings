@@ -1,8 +1,0 @@
-// Terminal OS Specific Settings - User
-{
-    "terminal": "ghostty",
-    "parameters": [
-        "+new-window",
-        "--working-directory=%CWD%"
-    ]
-}

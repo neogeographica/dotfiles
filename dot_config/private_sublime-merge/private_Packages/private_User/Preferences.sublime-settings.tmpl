@@ -7,6 +7,6 @@
 	"update_check": false,
 	"terminal_command": "ghostty +new-window --working-directory=\"$dir\"",
 {{- else }}
-	"terminal_command": "{{ .chezmoi.homeDir }}/.local/bin/ghostty-window-at.sh $dir",
+	"terminal_command": "{{ .chezmoi.homeDir }}/.local/bin/ghostty-window-at.sh \"$dir\"",
 {{- end }}
 }

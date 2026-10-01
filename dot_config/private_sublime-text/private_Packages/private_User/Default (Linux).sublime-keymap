@@ -3,12 +3,18 @@
         "keys": [
             "f10"
         ],
-        "command": "open_terminal"
+        "command": "open_terminal",
+        "args": {
+            "dir": "$file_path"
+        }
     },
     {
         "keys": [
             "shift+f10"
         ],
-        "command": "open_terminal_project_folder"
+        "command": "open_terminal",
+        "args": {
+            "dir": "$folder"
+        }
     }
 ]
