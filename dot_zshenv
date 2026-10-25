@@ -48,5 +48,7 @@ fi
 export fpath
 
 # If this system needs something else and needs it specifically in zshenv,
-# pick that up here.
+# pick that up here. Note that things in .zshenv_local will NOT get applied
+# if e.g. the greeter just sources .profile in session setup; settings needed
+# in that situation should probably go into .profile_local instead.
 [[ -r ~/.zshenv_local ]] && source ~/.zshenv_local

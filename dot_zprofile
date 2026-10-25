@@ -2,3 +2,16 @@
 # comments over there for details.
 SOURCING_ZSHENV_FROM_ZPROFILE=true
 [[ -r ~/.zshenv ]] && source ~/.zshenv
+
+# If this system needs something else and needs it specifically in zprofile,
+# pick that up here. Note that things in .zprofile_local will NOT get applied
+# if e.g. the greeter just sources .profile in session setup; settings needed
+# in that situation should probably go into .profile_local instead.
+# An example of what I use this for on PopOS: when using zsh, the greeter will
+# source /etc/profile -- which is responsible for sourcing everything in
+# /etc/profile.d -- but it is not sourced for my top-level zsh login shell. To
+# make sure that I have all the appropriate settings for XDG_DATA_DIRS and
+# whatnot that come from the /etc/profile.d scripts, in PopOS I need to do
+# this in .zprofile_local:
+#   emulate sh -c 'source /etc/profile'
+[[ -r ~/.zprofile_local ]] && source ~/.zprofile_local
